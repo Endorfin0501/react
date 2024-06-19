@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import MainData from '../Components/FormMainData'
 import { useLocation } from 'react-router-dom'
 
-function S() {
+function FPA() {
   const location = useLocation()
 
   const { state } = location
@@ -22,25 +22,58 @@ function S() {
     }
   }
 
-  console.log(state)
+  console.log('Stste:', state)
 
   return (
-    <div>
+    <div className='container'>
       <h1>{name}</h1>
       <MainData
         repairName={repairName}
         type={type}
         form={`${formtitle(model)}Set`}
       >
-        {(selectedData) => (
-          <div>
-            {/* 渲染A.js组件需要的属性 */}
-            <p>time: {selectedData && selectedData.time}</p>
-          </div>
-        )}
+        {(selectedData) => {
+          if (!selectedData) {
+            return <p>Loading...</p>
+          }
+          console.log('Selected Data in set:', selectedData) // 调试信息
+
+          return (
+            <table className='table'>
+              <thead>
+                <tr>
+                  <th>機台編號</th>
+                  <th>製令編號</th>
+                  <th>反應、設變單號</th>
+                  <th>主旨</th>
+                  <th>負責人</th>
+                  <th>日期</th>
+                  <th>出圖圖號</th>
+                  <th>圖名</th>
+                  <th>簽名</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedData.date.map((_, index) => (
+                  <tr key={index}>
+                    <td>{selectedData.repair_name || ''}</td>
+                    <td>{selectedData.order_num || ''}</td>
+                    <td>{selectedData.setup_num[index] || ''}</td>
+                    <td>{selectedData.purpose[index] || ''}</td>
+                    <td>{selectedData.principal[index] || ''}</td>
+                    <td>{selectedData.date[index] || ''}</td>
+                    <td>{selectedData.pic_num[index] || ''}</td>
+                    <td>{selectedData.pic_name[index] || ''}</td>
+                    <td>{selectedData.sign[index] || ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )
+        }}
       </MainData>
     </div>
   )
 }
 
-export default S
+export default FPA

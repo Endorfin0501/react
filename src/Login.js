@@ -15,7 +15,7 @@ const Login = () => {
 
     // 发送登录请求到后端
     try {
-      const response = await fetch('http://192.168.0.10:8000/login/', {
+      const response = await fetch('http://192.168.2.176:8000/login/', {
         method: 'POST',
         body: formData,
       })

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom'
 
-const url = 'http://192.168.0.10:8000/machine/'
+const url = 'http://192.168.2.176:8000/machine/'
 
-function SerchMechineButton() {
+function SerchMechineButton({ searchTerm }) {
   const [data, setData] = useState([])
   const navigate = useNavigate()
 
@@ -37,9 +37,14 @@ function SerchMechineButton() {
     navigate(url, { state: { repairName, model } }, { replace: false })
   }
 
+  const filteredData = data.filter(
+    (item) =>
+      item.repair.includes(searchTerm) || item.model.includes(searchTerm)
+  )
+
   return (
     <>
-      {data.map((data) => {
+      {filteredData.map((data) => {
         const { id, repair, model } = data
         return (
           <li key={id}>
