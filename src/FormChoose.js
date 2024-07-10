@@ -18,16 +18,18 @@ function FormChoose() {
 
   // 在页面中渲染内容
   return (
-    <div>
-      <h1>Form Choose</h1>
-      <p>Repair Name: {repairName}</p>
-      <p>Model: {model}</p>
-      <Button repairName={name} type='CC' model={mod}></Button>
-      <Button repairName={name} type='FPA' model={mod}></Button>
-      <Button repairName={name} type='P' model={mod}></Button>
-      <Button repairName={name} type='RC' model={mod}></Button>
-      <Button repairName={name} type='S' model={mod}></Button>
-      <Button repairName={name} type='SR' model={mod}></Button>
+    <div className="container">
+      <div className="button-group-vertical">
+        <h1>Form Choose</h1>
+        <p>Repair Name: {repairName}</p>
+        <p>Model: {model}</p>
+        <Button repairName={name} type='CC' model={mod}></Button>
+        <Button repairName={name} type='FPA' model={mod}></Button>
+        <Button repairName={name} type='P' model={mod}></Button>
+        <Button repairName={name} type='RC' model={mod}></Button>
+        <Button repairName={name} type='S' model={mod}></Button>
+        <Button repairName={name} type='SR' model={mod}></Button>
+      </div>
     </div>
   )
 }

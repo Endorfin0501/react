@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { URL } from './url'
+import './style.css'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -15,7 +17,7 @@ const Login = () => {
 
     // 发送登录请求到后端
     try {
-      const response = await fetch('http://192.168.2.176:8000/login/', {
+      const response = await fetch(`${URL}/login/`, {
         method: 'POST',
         body: formData,
       })
@@ -31,26 +33,30 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type='text'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <button type='submit'>Login</button>
+        <div div className="form-group">
+          <label>
+            Username:
+            <input
+              type='text'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              />
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Password:
+            <input
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              />
+          </label>
+        </div>
+        <button type='submit' className='btn btn-primary'>Login</button>
       </form>
     </div>
   )

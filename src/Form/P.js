@@ -39,7 +39,7 @@ function FPA() {
           console.log('Selected Data in FPA:', selectedData) // 调试信息
 
           return (
-            <table className='container'>
+            <table className="table table-striped-columns" >
               <thead>
                 <tr>
                   <th>機台編號</th>

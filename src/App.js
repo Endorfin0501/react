@@ -1,6 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Machine from './mechine'
+import HistoryMachine from './HistoryMachine'
 import FormChoose from './FormChoose'
 import Cc from './Form/CC'
 import Fpa from './Form/FPA'
@@ -16,6 +17,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/Machine' element={<Machine />} />
+        <Route path='/HistoryMachine' element={<HistoryMachine />} />
         <Route path='/FormChoose' element={<FormChoose />} />
         <Route path='/FormL機+CC' element={<Cc />} />
         <Route path='/FormL機+FPA' element={<Fpa />} />
