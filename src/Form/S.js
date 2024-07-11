@@ -2,6 +2,8 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import MainData from '../Components/FormMainData'
 import { useLocation } from 'react-router-dom'
+import '../style.css'
+
 
 function FPA() {
   const location = useLocation()
@@ -39,7 +41,7 @@ function FPA() {
           console.log('Selected Data in set:', selectedData) // 调试信息
 
           return (
-            <table className='table'>
+            <table className='table table-striped-columns' id='top1'>
               <thead>
                 <tr>
                   <th>機台編號</th>

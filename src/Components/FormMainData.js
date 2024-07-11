@@ -74,7 +74,7 @@ function FormMainData({ repairName, name, form, children }) {
           .replace(/'/g, '"');
         cleanedString = cleanedString.replace(/[\x00-\x1F\x7F]/g, '');
         cleanedString = cleanedString.replace(/\\'/g, "'");
-        console.log(`Parsing field ${field} with cleaned value: ${cleanedString}`);
+       // console.log(`Parsing field ${field} with cleaned value: ${cleanedString}`);
 
         if (isValidJson(cleanedString)) {
           try {
@@ -103,7 +103,7 @@ function FormMainData({ repairName, name, form, children }) {
           (item) => item.repair_name === repairName
         )
         if (selected) {
-          console.log('Selected data before initialization:', selected) // 调试信息
+         // console.log('Selected data before initialization:', selected) // 调试信息
           setSelectedData(selected)
         }
       }
@@ -120,10 +120,10 @@ function FormMainData({ repairName, name, form, children }) {
     if (repairName) {
       const selected = data.find((item) => item.repair_name === repairName)
       if (selected) {
-        console.log(
-          'Selected data before initialization (useEffect):',
-          selected
-        ) // 调试信息
+        // console.log(
+        //   'Selected data before initialization (useEffect):',
+        //   selected
+        // ) // 调试信息
         setSelectedData(selected)
       }
     }

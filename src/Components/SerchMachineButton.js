@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom'
+import { URL } from '../url'
 
-const url = 'http://192.168.2.176:8000/machine/'
+
+const url = `${URL}/machine/`
 
 function SerchMechineButton({ searchTerm }) {
   const [data, setData] = useState([])

@@ -2,6 +2,7 @@
 
 .container {
     margin-top: 20px;
+    max-width: 1200px;
   }
   
   .button-group-vertical {
@@ -63,3 +64,43 @@
     z-index: 1000; /* 確保按鈕在其他內容之上 */
   }
   
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .table {
+    margin-bottom: 20px;
+  }
+  
+  .table-striped-columns thead th {
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px;
+  }
+  
+  .table-striped-columns tbody td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px;
+  }
+  
+  #top1, #top2, #mid1, #mid2, #under1, #under2 {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  #top1 thead th, #top2 thead th, #mid1 thead th, #mid2 thead th, #under1 thead th, #under2 thead th {
+    background-color: #e9ecef;
+  }
+  
+  #top1 tbody tr, #top2 tbody tr, #mid1 tbody tr, #mid2 tbody tr, #under1 tbody tr, #under2 tbody tr {
+    transition: background-color 0.2s;
+  }
+  
+  #top1 tbody tr:hover, #top2 tbody tr:hover, #mid1 tbody tr:hover, #mid2 tbody tr:hover, #under1 tbody tr:hover, #under2 tbody tr:hover {
+    background-color: #f1f1f1;
+  }
