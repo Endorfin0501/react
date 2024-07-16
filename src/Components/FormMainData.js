@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { URL } from '../url'
 
-
 function FormMainData({ repairName, name, form, children }) {
   const url = `${URL}/${form}/`
   const [data, setData] = useState([])
@@ -10,12 +9,12 @@ function FormMainData({ repairName, name, form, children }) {
 
   const isValidJson = (str) => {
     try {
-      JSON.parse(str);
+      JSON.parse(str)
     } catch (e) {
-      return false;
+      return false
     }
-    return true;
-  };
+    return true
+  }
 
   const parseFields = (item) => {
     const fieldsToParse = [
@@ -65,31 +64,45 @@ function FormMainData({ repairName, name, form, children }) {
       'reviewer2',
       'result',
       'user',
+
+      'testdate',
+      'judge',
+      'teatstandards',
+      'assmbleSign',
+      'checkresult ',
+      'model_principal',
+      'audit',
     ]
 
     fieldsToParse.forEach((field) => {
       if (typeof item[field] === 'string') {
         let cleanedString = item[field]
           .replace(/^[']|[']$/g, '')
-          .replace(/'/g, '"');
-        cleanedString = cleanedString.replace(/[\x00-\x1F\x7F]/g, '');
-        cleanedString = cleanedString.replace(/\\'/g, "'");
-       // console.log(`Parsing field ${field} with cleaned value: ${cleanedString}`);
+          .replace(/'/g, '"')
+        cleanedString = cleanedString.replace(/[\x00-\x1F\x7F]/g, '')
+        cleanedString = cleanedString.replace(/\\'/g, "'")
+        console.log(
+          `Parsing field ${field} with cleaned value: ${cleanedString}`
+        )
 
         if (isValidJson(cleanedString)) {
           try {
-            item[field] = JSON.parse(cleanedString);
+            item[field] = JSON.parse(cleanedString)
           } catch (error) {
-            console.error(`Error parsing field ${field}:`, error, `Original value: ${item[field]}`);
-            item[field] = []; // 如果解析失败，将字段设为空数组
+            console.error(
+              `Error parsing field ${field}:`,
+              error,
+              `Original value: ${item[field]}`
+            )
+            item[field] = [] // 如果解析失败，将字段设为空数组
           }
         } else {
-          item[field] = cleanedString; // 如果不是有效的 JSON 字符串，直接使用清理后的字符串
+          item[field] = cleanedString // 如果不是有效的 JSON 字符串，直接使用清理后的字符串
         }
       }
-    });
-    return item;
-  };
+    })
+    return item
+  }
 
   const getData = async () => {
     try {
@@ -103,7 +116,7 @@ function FormMainData({ repairName, name, form, children }) {
           (item) => item.repair_name === repairName
         )
         if (selected) {
-         // console.log('Selected data before initialization:', selected) // 调试信息
+          console.log('Selected data before initialization:', selected) // 调试信息
           setSelectedData(selected)
         }
       }
@@ -120,10 +133,10 @@ function FormMainData({ repairName, name, form, children }) {
     if (repairName) {
       const selected = data.find((item) => item.repair_name === repairName)
       if (selected) {
-        // console.log(
-        //   'Selected data before initialization (useEffect):',
-        //   selected
-        // ) // 调试信息
+        console.log(
+          'Selected data before initialization (useEffect):',
+          selected
+        ) // 调试信息
         setSelectedData(selected)
       }
     }

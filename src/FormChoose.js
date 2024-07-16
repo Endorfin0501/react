@@ -18,11 +18,11 @@ function FormChoose() {
 
   // 在页面中渲染内容
   return (
-    <div className="container">
-      <div className="button-group-vertical">
-        <h1>Form Choose</h1>
-        <p>Repair Name: {repairName}</p>
-        <p>Model: {model}</p>
+    <div className='container'>
+      <div className='button-group-vertical'>
+        <h1>表單選擇</h1>
+        <p>機台名稱: {repairName}</p>
+        <p>機台種類: {model}</p>
         <Button repairName={name} type='CC' model={mod}></Button>
         <Button repairName={name} type='FPA' model={mod}></Button>
         <Button repairName={name} type='P' model={mod}></Button>
