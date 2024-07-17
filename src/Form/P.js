@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState }from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import MainData from '../Components/FormMainData'
 import { useLocation } from 'react-router-dom'
+import PInput from '../FormInput/P'
 import '../style.css'
+import { Button } from 'react-bootstrap'
 
 function FPA() {
   const location = useLocation()
@@ -23,11 +25,20 @@ function FPA() {
     }
   }
 
+  const [showModal, setShowModal] = useState(false)
+
+  const handleShow = () => setShowModal(true)
+  const handleClose = () => setShowModal(false)
+
   console.log('Stste:', state)
 
   return (
     <div className='container'>
       <h1>{name}</h1>
+      <Button variant='primary' onClick={handleShow}>
+        上傳數據
+      </Button>
+      <PInput show={showModal} handleClose={handleClose} />
       <MainData
         repairName={repairName}
         type={type}

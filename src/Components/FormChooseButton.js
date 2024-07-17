@@ -14,18 +14,18 @@ function FormChooseButton({ repairName, type, model }) {
 
   const formname = (name) => {
     switch (name) {
-      case 'CC':
-        return '試車完成最終檢驗記錄表'
+      case 'RC':
+        return '履歷封面進度首頁'
       case 'FPA':
         return '現場零件組裝(異常)記錄表'
       case 'P':
         return '拉吹機運轉測試(異常)記錄表'
-      case 'RC':
-        return '履歷封面進度首頁'
-      case 'S':
-        return '設變紀錄表'
       case 'SR':
         return '組裝作業檢驗標準記錄表'
+      case 'CC':
+        return '試車完成最終檢驗記錄表'
+      case 'S':
+        return '設變紀錄表'
       default:
         return '' // Default
     }

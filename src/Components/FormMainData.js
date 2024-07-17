@@ -65,6 +65,7 @@ function FormMainData({ repairName, name, form, children }) {
       'result',
       'user',
 
+      'modelname',
       'testdate',
       'judge',
       'teatstandards',
@@ -81,20 +82,13 @@ function FormMainData({ repairName, name, form, children }) {
           .replace(/'/g, '"')
         cleanedString = cleanedString.replace(/[\x00-\x1F\x7F]/g, '')
         cleanedString = cleanedString.replace(/\\'/g, "'")
-        console.log(
-          `Parsing field ${field} with cleaned value: ${cleanedString}`
-        )
 
         if (isValidJson(cleanedString)) {
           try {
             item[field] = JSON.parse(cleanedString)
           } catch (error) {
-            console.error(
-              `Error parsing field ${field}:`,
-              error,
-              `Original value: ${item[field]}`
-            )
-            item[field] = [] // 如果解析失败，将字段设为空数组
+            console.error(`Error parsing field ${field}:`, error)
+            item[field] = []// 如果解析失败，将字段设为空数组
           }
         } else {
           item[field] = cleanedString // 如果不是有效的 JSON 字符串，直接使用清理后的字符串
@@ -110,13 +104,13 @@ function FormMainData({ repairName, name, form, children }) {
       const data = await response.json()
       console.log('Fetched data:', data) // 调试信息
       const parsedData = data.map(parseFields)
+      console.log('解析后的数据:', parsedData) // 调试信息
       setData(parsedData)
       if (repairName) {
         const selected = parsedData.find(
-          (item) => item.repair_name === repairName
+          (item) => item.repairname === repairName
         )
         if (selected) {
-          console.log('Selected data before initialization:', selected) // 调试信息
           setSelectedData(selected)
         }
       }
@@ -127,16 +121,12 @@ function FormMainData({ repairName, name, form, children }) {
 
   useEffect(() => {
     getData()
-  }, [form]) //不要把中括號拿掉，會崩潰
+  }, [form])
 
   useEffect(() => {
     if (repairName) {
       const selected = data.find((item) => item.repair_name === repairName)
       if (selected) {
-        console.log(
-          'Selected data before initialization (useEffect):',
-          selected
-        ) // 调试信息
         setSelectedData(selected)
       }
     }
