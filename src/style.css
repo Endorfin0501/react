@@ -104,3 +104,9 @@
   #top1 tbody tr:hover, #top2 tbody tr:hover, #mid1 tbody tr:hover, #mid2 tbody tr:hover, #under1 tbody tr:hover, #under2 tbody tr:hover {
     background-color: #f1f1f1;
   }
+
+  /* 禁用文本选择 */
+.no-select {
+  user-select: none;
+}
+

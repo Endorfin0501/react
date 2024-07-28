@@ -18,6 +18,8 @@ function FormMainData({ repairName, name, form, children }) {
 
   const parseFields = (item) => {
     const fieldsToParse = [
+      'id',
+
       'order_num',
       'date',
       'pic_num',
@@ -102,9 +104,9 @@ function FormMainData({ repairName, name, form, children }) {
     try {
       const response = await fetch(url)
       const data = await response.json()
-      console.log('Fetched data:', data) // 调试信息
+      // console.log('Fetched data:', data) // 调试信息
       const parsedData = data.map(parseFields)
-      console.log('解析后的数据:', parsedData) // 调试信息
+      // console.log('解析后的数据:', parsedData) // 调试信息
       setData(parsedData)
       if (repairName) {
         const selected = parsedData.find(
