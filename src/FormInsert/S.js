@@ -1,14 +1,16 @@
 import React from 'react'
-import DynamicCreatForm from './DynamicCreatForm'
-import { URL } from '../url'
+import DynamicInsertForm from './DynamicInsertForm'
 import { Modal, Button } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 
 const fields = [
-  { name: 'repair_name', placeholder: '機台名稱' },
-  { name: 'order_num', placeholder: '製令編號' },
-  { name: 'model_principal', placeholder: '機台負責人' },
-  { name: 'primary_director', placeholder: '部門主管' },
+  { name: 'setup_num', placeholder: '反應、設變單號' },
+  { name: 'purpose', placeholder: '主旨' },
+  { name: 'principal', placeholder: '負責人' },
+  { name: 'date', type: 'date', placeholder: '日期' },
+  { name: 'pic_num', placeholder: '出圖圖號' },
+  { name: 'pic_name', placeholder: '圖名	' },
+  { name: 'sign', placeholder: '簽名' },
 ]
 
 const modelname = (model) => {
@@ -24,23 +26,24 @@ const modelname = (model) => {
   }
 }
 
-const S = ({ show, handleClose }) => {
+const S = ({ show, handleClose, repairName }) => {
   const location = useLocation()
-  const state = location.state
+  const { state } = location
   const model = state?.model // 从 state 中提取 model 值
 
-  console.log('Received model:', model) // 输出 model 值
-  console.log('Model name:', modelname(model)) // 输出 modelName
+  // console.log('Received model:', model); // 输出 model 值
+  // console.log('Model name:', modelname(model)); // 输出 modelName
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>創建表單</Modal.Title>
+        <Modal.Title>上傳數據</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <DynamicCreatForm
+        <DynamicInsertForm
           fields={fields}
-          endpoint={`${URL}/create/`}
-          modelName={modelname(model)}
+          repairName={repairName}
+          modelName={modelname(model)} // 使用 modelName 函数计算 modelName
         />
       </Modal.Body>
       <Modal.Footer>

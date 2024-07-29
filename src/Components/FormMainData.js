@@ -31,6 +31,7 @@ function FormMainData({ repairName, name, form, children }) {
       'department',
       'department_director',
       'note',
+
       'mo_name',
       'num',
       'thing',
@@ -75,6 +76,12 @@ function FormMainData({ repairName, name, form, children }) {
       'checkresult ',
       'model_principal',
       'audit',
+
+      'setup_num',
+      'purpose',
+      'principal',
+      'pic_name',
+      'sign',
     ]
 
     fieldsToParse.forEach((field) => {
@@ -90,7 +97,7 @@ function FormMainData({ repairName, name, form, children }) {
             item[field] = JSON.parse(cleanedString)
           } catch (error) {
             console.error(`Error parsing field ${field}:`, error)
-            item[field] = []// 如果解析失败，将字段设为空数组
+            item[field] = [] // 如果解析失败，将字段设为空数组
           }
         } else {
           item[field] = cleanedString // 如果不是有效的 JSON 字符串，直接使用清理后的字符串
