@@ -1,112 +1,131 @@
 /* styles.css */
 
 .container {
-    margin-top: 20px;
-    max-width: 1200px;
-  }
-  
-  .button-group-vertical {
-    width: 100%;
-  }
-  
-  .button-group-vertical .btn {
-    margin-bottom: 10px;
-  }
+  margin-top: 20px;
+  max-width: 1200px;
+}
 
-  .login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  
-  .error {
-    color: red;
-    margin-bottom: 15px;
-  }
-  
-  .btn {
-    width: 100%;
-    padding: 10px;
-  }
+.button-group-vertical {
+  width: 100%;
+}
 
-  .mechine-container {
-    padding-top: 60px; /* 確保內容不被按鈕遮擋 */
-  }
-  
-  .switch-button {
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000; /* 確保按鈕在其他內容之上 */
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .table {
-    margin-bottom: 20px;
-  }
-  
-  .table-striped-columns thead th {
-    background-color: #f8f9fa;
-    color: #333;
-    text-align: center;
-    vertical-align: middle;
-    padding: 12px;
-  }
-  
-  .table-striped-columns tbody td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 12px;
-  }
-  
-  #top1, #top2, #mid1, #mid2, #under1, #under2 {
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  #top1 thead th, #top2 thead th, #mid1 thead th, #mid2 thead th, #under1 thead th, #under2 thead th {
-    background-color: #e9ecef;
-  }
-  
-  #top1 tbody tr, #top2 tbody tr, #mid1 tbody tr, #mid2 tbody tr, #under1 tbody tr, #under2 tbody tr {
-    transition: background-color 0.2s;
-  }
-  
-  #top1 tbody tr:hover, #top2 tbody tr:hover, #mid1 tbody tr:hover, #mid2 tbody tr:hover, #under1 tbody tr:hover, #under2 tbody tr:hover {
-    background-color: #f1f1f1;
-  }
+.button-group-vertical .btn {
+  margin-bottom: 10px;
+}
 
-  /* 禁用文本选择 */
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.error {
+  color: red;
+  margin-bottom: 15px;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+}
+
+.mechine-container {
+  padding-top: 60px; /* 確保內容不被按鈕遮擋 */
+}
+
+.switch-button {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* 確保按鈕在其他內容之上 */
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.table {
+  margin-bottom: 20px;
+}
+
+.table-striped-columns thead th {
+  background-color: #f8f9fa;
+  color: #333;
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px;
+}
+
+.table-striped-columns tbody td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px;
+}
+
+#top1,
+#top2,
+#mid1,
+#mid2,
+#under1,
+#under2 {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#top1 thead th,
+#top2 thead th,
+#mid1 thead th,
+#mid2 thead th,
+#under1 thead th,
+#under2 thead th {
+  background-color: #e9ecef;
+}
+
+#top1 tbody tr,
+#top2 tbody tr,
+#mid1 tbody tr,
+#mid2 tbody tr,
+#under1 tbody tr,
+#under2 tbody tr {
+  transition: background-color 0.2s;
+}
+
+#top1 tbody tr:hover,
+#top2 tbody tr:hover,
+#mid1 tbody tr:hover,
+#mid2 tbody tr:hover,
+#under1 tbody tr:hover,
+#under2 tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* 禁用文本选择 */
 .no-select {
   user-select: none;
 }
-

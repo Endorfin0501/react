@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import MainData from '../Components/FormMainData'
 import { useLocation } from 'react-router-dom'
@@ -13,19 +13,8 @@ function S() {
   const location = useLocation()
   const [selectedData, setSelectedData] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(null)
-  const [showModal, setShowModal] = useState(false)
-  const [showModal2, setShowModal2] = useState(false)
-  const [showModal3, setShowModal3] = useState(false)
-  const [showModal4, setShowModal4] = useState(false)
-  const [showActionModal, setShowActionModal] = useState(false)
-
   const { state } = location
   const { repairName, type, model, name } = state
-
-  useEffect(() => {
-    // Use useEffect to update selectedData when `data` changes
-    setSelectedData(null)
-  }, [state])
 
   const formtitle = (model) => {
     switch (model) {
@@ -40,21 +29,37 @@ function S() {
     }
   }
 
-  const toggleModal = (modalSetter, value) => modalSetter(value)
+  const [showModal, setShowModal] = useState(false)
+  const [showModal2, setShowModal2] = useState(false)
+  const [showModal3, setShowModal3] = useState(false)
+  const [showModal4, setShowModal4] = useState(false)
+  const [showActionModal, setShowActionModal] = useState(false)
+
+  const handleShow = () => setShowModal(true)
+  const handleClose = () => setShowModal(false)
+
+  const handleShow2 = () => setShowModal2(true)
+  const handleClose2 = () => setShowModal2(false)
+
+  const handleShow3 = () => setShowModal3(true)
+  const handleClose3 = () => setShowModal3(false)
+
+  const handleShow4 = () => setShowModal4(true)
+  const handleClose4 = () => setShowModal4(false)
 
   const handleShowActionModal = (index) => {
     if (selectedData && selectedData.date && selectedData.date.length > index) {
       const item = {
-        id: selectedData.id,
-        setup_num: selectedData.setup_num[index] || '',
-        purpose: selectedData.purpose[index] || '',
-        principal: selectedData.principal[index] || '',
-        date: selectedData.date[index] || '',
-        pic_num: selectedData.pic_num[index] || '',
-        pic_name: selectedData.pic_name[index] || '',
-        sign: selectedData.sign[index] || '',
+        id: selectedData.id, // 获取数据库中的 ID
+        setup_num: selectedData.setup_num[index],
+        purpose: selectedData.purpose[index],
+        principal: selectedData.principal[index],
+        date: selectedData.date[index],
+        pic_num: selectedData.pic_num[index],
+        pic_name: selectedData.pic_name[index],
+        sign: selectedData.sign[index],
       }
-      setSelectedIndex(index)
+      setSelectedIndex(index) // 保存当前行的索引
       setShowActionModal(true)
     }
   }
@@ -66,7 +71,8 @@ function S() {
 
   const handleSave = (updatedData) => {
     console.log('Saved Data:', updatedData)
-    // Handle save logic here
+    // 在這裡處理保存邏輯
+    // 例如更新狀態或調用 API
   }
 
   console.log('State:', state)
@@ -81,47 +87,26 @@ function S() {
         form={`${formtitle(model)}S`}
       >
         {(data) => {
-          setSelectedData(data)
-
+          setSelectedData(data) // 設置 selectedData
           if (!data) {
             return (
               <div>
-                <Button
-                  variant='primary'
-                  onClick={() => toggleModal(setShowModal, true)}
-                >
+                <Button variant='primary' onClick={handleShow}>
                   創建表單
                 </Button>
-                <SCreat
-                  show={showModal}
-                  handleClose={() => toggleModal(setShowModal, false)}
-                />
+                <SCreat show={showModal} handleClose={handleClose} />
               </div>
             )
           }
 
-          const safeData = {
-            setup_num: Array.isArray(data.setup_num) ? data.setup_num : [],
-            purpose: Array.isArray(data.purpose) ? data.purpose : [],
-            principal: Array.isArray(data.principal) ? data.principal : [],
-            date: Array.isArray(data.date) ? data.date : [],
-            pic_num: Array.isArray(data.pic_num) ? data.pic_num : [],
-            pic_name: Array.isArray(data.pic_name) ? data.pic_name : [],
-            sign: Array.isArray(data.sign) ? data.sign : [],
-            department: Array.isArray(data.department) ? data.department : [],
-          }
-
           return (
             <div>
-              <Button
-                variant='info'
-                onClick={() => toggleModal(setShowModal2, true)}
-              >
+              <Button variant='info' onClick={handleShow2}>
                 上傳數據
               </Button>
               <SInsert
                 show={showModal2}
-                handleClose={() => toggleModal(setShowModal2, false)}
+                handleClose={handleClose2}
                 repairName={repairName}
               />
 
@@ -154,26 +139,26 @@ function S() {
                     </tr>
                   </thead>
                   <tbody>
-                    {safeData.date.length > 0 ? (
-                      safeData.date.map((_, index) => (
+                    {selectedData && selectedData.date ? (
+                      selectedData.date.map((_, index) => (
                         <tr
-                          key={index}
+                          key={index} // 使用索引作为 key
                           onMouseDown={() => handleShowActionModal(index)}
                           onTouchStart={() => handleShowActionModal(index)}
                         >
-                          <td>{safeData.setup_num[index] || ''}</td>
-                          <td>{safeData.purpose[index] || ''}</td>
-                          <td>{safeData.principal[index] || ''}</td>
-                          <td>{safeData.date[index] || ''}</td>
-                          <td>{safeData.pic_num[index] || ''}</td>
-                          <td>{safeData.pic_name[index] || ''}</td>
-                          <td>{safeData.sign[index] || ''}</td>
-                          <td>{safeData.department[index] || ''}</td>
+                          <td>{selectedData.setup_num[index] || ''}</td>
+                          <td>{selectedData.purpose[index] || ''}</td>
+                          <td>{selectedData.principal[index] || ''}</td>
+                          <td>{selectedData.date[index] || ''}</td>
+                          <td>{selectedData.pic_num[index] || ''}</td>
+                          <td>{selectedData.pic_name[index] || ''}</td>
+                          <td>{selectedData.sign[index] || ''}</td>
+                          <td>{selectedData.department[index] || ''}</td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan='8'>沒有數據</td>
+                        <td colSpan='11'>沒有數據</td>
                       </tr>
                     )}
                   </tbody>
@@ -186,24 +171,18 @@ function S() {
                   <Modal.Title>選擇操作</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Button
-                    variant='warning'
-                    onClick={() => toggleModal(setShowModal3, true)}
-                  >
+                  <Button variant='warning' onClick={handleShow3}>
                     編輯
                   </Button>
                   <SEdit
                     show={showModal3}
-                    handleClose={() => toggleModal(setShowModal3, false)}
+                    handleClose={handleClose3}
                     data={selectedData}
                     onSave={handleSave}
                   />
                   {selectedIndex !== null &&
-                    safeData.date.length - 1 === selectedIndex && (
-                      <Button
-                        variant='danger'
-                        onClick={() => toggleModal(setShowModal4, true)}
-                      >
+                    selectedData.date.length - 1 === selectedIndex && (
+                      <Button variant='danger' onClick={handleShow4}>
                         刪除
                       </Button>
                     )}

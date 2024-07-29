@@ -1,36 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import DynamicEditForm from './DynamicEditForm'
-import { useLocation } from 'react-router-dom'
 import { URL } from '../url'
 
 function S({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
-  const location = useLocation()
-  const { state } = location
-  const model = state?.model // 从 state 中提取 model 值
 
-  const modelname = (model) => {
-    switch (model) {
-      case 'L機':
-        return 'LSet'
-      case '鳳凰':
-        return 'PSet'
-      case '一段式':
-        return 'OSet'
-      default:
-        return '' // 处理不匹配的情况
-    }
-  }
-
-  // 只在 `data` 变化时更新本地表单状态
   useEffect(() => {
-    setEditForm(data)
+    setEditForm(data) // 当 data 变化时更新编辑表单
   }, [data])
 
   const handleEditChange = (e) => {
     const { name, value } = e.target
-    console.log(`Field: ${name}, New Value: ${value}`)
     setEditForm((prevForm) => ({
       ...prevForm,
       [name]: value,
@@ -38,41 +19,34 @@ function S({ show, handleClose, data = {}, onSave = () => {} }) {
   }
 
   const handleEditSubmit = async () => {
-    const index = 0 // 确保索引设置正确
-
-    // 确保 `editForm.date` 是正确的 JSON 格式
-    let dateField = editForm.date
-    if (Array.isArray(dateField)) {
-      dateField = JSON.stringify(dateField) // 转换为 JSON 字符串
+    if (!editForm || !editForm.id || editForm.index === undefined) {
+      console.error('No ID or index found in editForm:', editForm)
+      return
     }
 
-    const cleanData = {
+    // 在请求体中包括模型名称和序列化器名称
+    const payload = {
       ...editForm,
-      index: index,
-      date: dateField,
+      model: 'LSet', // 这里填入模型名称
+      serializer: 'LSetSerializer', // 这里填入序列化器名称
     }
-
-    console.log('Data to be sent:', cleanData) // 输出发送的数据
 
     try {
-      const response = await fetch(
-        `${URL}/update/${modelname(model)}/${editForm.id}/`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(cleanData),
-        }
-      )
+      const response = await fetch(`${URL}/api/update/${editForm.id}/`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
 
       if (response.ok) {
-        const data = await response.json()
-        console.log('Updated Data:', data)
-        onSave() // 通知父组件数据已保存
+        const updatedData = await response.json()
+        onSave(updatedData) // 调用父组件的 onSave 回调
+        handleClose() // 关闭模态框
+        window.location.reload()
       } else {
-        const errorText = await response.text()
-        console.error('Error updating item:', errorText)
+        console.error('Error updating item:', await response.text())
       }
     } catch (error) {
       console.error('Error in handleEditSubmit:', error)

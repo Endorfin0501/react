@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom'
 import { URL } from '../url'
 
-
 const url = `${URL}/machine/`
 
 function SerchMechineButton({ searchTerm }) {

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { URL } from '../url'
 import '../style.css'
 
-
 const url = `${URL}/machine/`
 
 function NowMechine({ searchTerm }) {
@@ -46,23 +45,23 @@ function NowMechine({ searchTerm }) {
   )
 
   return (
-    <div className="container">
-    <div className="button-group-vertical">
-      {filteredData.map((data) => {
-        const { id, repair, model } = data
-        return (
-          <div key={id}>
-            <button
-              className={`btn ${getButtonColor(model)}`}
-              name={model}
-              onClick={() => handleButtonClick(repair, model)}
+    <div className='container'>
+      <div className='button-group-vertical'>
+        {filteredData.map((data) => {
+          const { id, repair, model } = data
+          return (
+            <div key={id}>
+              <button
+                className={`btn ${getButtonColor(model)}`}
+                name={model}
+                onClick={() => handleButtonClick(repair, model)}
               >
-              {repair} {model}
-            </button>
-          </div>
-        )
-      })}
-    </div>
+                {repair} {model}
+              </button>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
