@@ -13,6 +13,14 @@ function S() {
   const location = useLocation()
   const [selectedData, setSelectedData] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [modals, setModals] = useState({
+    showModal: false,
+    showModal2: false,
+    showModal3: false,
+    showModal4: false,
+    showActionModal: false,
+  })
+  const [editData, setEditData] = useState(null)
   const { state } = location
   const { repairName, type, model, name } = state
 
@@ -25,54 +33,38 @@ function S() {
       case '一段式':
         return 'O'
       default:
-        return '' // Default
+        return ''
     }
   }
 
-  const [showModal, setShowModal] = useState(false)
-  const [showModal2, setShowModal2] = useState(false)
-  const [showModal3, setShowModal3] = useState(false)
-  const [showModal4, setShowModal4] = useState(false)
-  const [showActionModal, setShowActionModal] = useState(false)
+  const openEditModal = (data) => {
+    if (data && data.id) {
+      setEditData(data)
+      setModals((prev) => ({ ...prev, showModal3: true }))
+    } else {
+      console.error('No ID found in data:', data)
+    }
+  }
 
-  const handleShow = () => setShowModal(true)
-  const handleClose = () => setShowModal(false)
-
-  const handleShow2 = () => setShowModal2(true)
-  const handleClose2 = () => setShowModal2(false)
-
-  const handleShow3 = () => setShowModal3(true)
-  const handleClose3 = () => setShowModal3(false)
-
-  const handleShow4 = () => setShowModal4(true)
-  const handleClose4 = () => setShowModal4(false)
+  const toggleModal = (key) => () => {
+    setModals((prev) => ({ ...prev, [key]: !prev[key] }))
+  }
 
   const handleShowActionModal = (index) => {
-    if (selectedData && selectedData.date && selectedData.date.length > index) {
-      const item = {
-        id: selectedData.id, // 获取数据库中的 ID
-        setup_num: selectedData.setup_num[index],
-        purpose: selectedData.purpose[index],
-        principal: selectedData.principal[index],
-        date: selectedData.date[index],
-        pic_num: selectedData.pic_num[index],
-        pic_name: selectedData.pic_name[index],
-        sign: selectedData.sign[index],
-      }
-      setSelectedIndex(index) // 保存当前行的索引
-      setShowActionModal(true)
+    if (selectedData?.date?.length > index) {
+      setSelectedIndex(index)
+      setModals((prev) => ({ ...prev, showActionModal: true }))
     }
   }
 
   const handleCloseActionModal = () => {
-    setShowActionModal(false)
+    setModals((prev) => ({ ...prev, showActionModal: false }))
     setSelectedIndex(null)
   }
 
   const handleSave = (updatedData) => {
     console.log('Saved Data:', updatedData)
-    // 在這裡處理保存邏輯
-    // 例如更新狀態或調用 API
+    // Handle save logic
   }
 
   console.log('State:', state)
@@ -87,26 +79,30 @@ function S() {
         form={`${formtitle(model)}S`}
       >
         {(data) => {
-          setSelectedData(data) // 設置 selectedData
+          setSelectedData(data)
+
           if (!data) {
             return (
               <div>
-                <Button variant='primary' onClick={handleShow}>
+                <Button variant='primary' onClick={toggleModal('showModal')}>
                   創建表單
                 </Button>
-                <SCreat show={showModal} handleClose={handleClose} />
+                <SCreat
+                  show={modals.showModal}
+                  handleClose={toggleModal('showModal')}
+                />
               </div>
             )
           }
 
           return (
             <div>
-              <Button variant='info' onClick={handleShow2}>
+              <Button variant='info' onClick={toggleModal('showModal2')}>
                 上傳數據
               </Button>
               <SInsert
-                show={showModal2}
-                handleClose={handleClose2}
+                show={modals.showModal2}
+                handleClose={toggleModal('showModal2')}
                 repairName={repairName}
               />
 
@@ -139,10 +135,10 @@ function S() {
                     </tr>
                   </thead>
                   <tbody>
-                    {selectedData && selectedData.date ? (
+                    {selectedData?.date ? (
                       selectedData.date.map((_, index) => (
                         <tr
-                          key={index} // 使用索引作为 key
+                          key={index}
                           onMouseDown={() => handleShowActionModal(index)}
                           onTouchStart={() => handleShowActionModal(index)}
                         >
@@ -153,36 +149,54 @@ function S() {
                           <td>{selectedData.pic_num[index] || ''}</td>
                           <td>{selectedData.pic_name[index] || ''}</td>
                           <td>{selectedData.sign[index] || ''}</td>
-                          <td>{selectedData.department[index] || ''}</td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan='11'>沒有數據</td>
+                        <td colSpan='10'>沒有數據</td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
 
-              {/* Action Modal */}
-              <Modal show={showActionModal} onHide={handleCloseActionModal}>
+              <Modal
+                show={modals.showActionModal}
+                onHide={handleCloseActionModal}
+              >
                 <Modal.Header closeButton>
                   <Modal.Title>選擇操作</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Button variant='warning' onClick={handleShow3}>
+                  <Button variant='warning' onClick={toggleModal('showModal3')}>
                     編輯
                   </Button>
                   <SEdit
-                    show={showModal3}
-                    handleClose={handleClose3}
-                    data={selectedData}
+                    show={modals.showModal3}
+                    handleClose={toggleModal('showModal3')}
+                    data={
+                      selectedIndex !== null
+                        ? {
+                            index: selectedIndex,
+                            id: selectedData.id, // 确保包含 ID
+                            setup_num: selectedData.setup_num[selectedIndex],
+                            purpose: selectedData.purpose[selectedIndex],
+                            principal: selectedData.principal[selectedIndex],
+                            date: selectedData.date[selectedIndex],
+                            pic_num: selectedData.pic_num[selectedIndex],
+                            pic_name: selectedData.pic_name[selectedIndex],
+                            sign: selectedData.sign[selectedIndex],
+                          }
+                        : {}
+                    }
                     onSave={handleSave}
                   />
                   {selectedIndex !== null &&
                     selectedData.date.length - 1 === selectedIndex && (
-                      <Button variant='danger' onClick={handleShow4}>
+                      <Button
+                        variant='danger'
+                        onClick={toggleModal('showModal4')}
+                      >
                         刪除
                       </Button>
                     )}

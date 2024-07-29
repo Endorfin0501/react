@@ -1,84 +1,73 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import MainData from '../Components/FormMainData';
-import { useLocation } from 'react-router-dom';
-import PCreat from '../FormCreat/P';
-import PInsert from '../FormInsert/P';
-import PEdit from '../FormEdit/P';
-import PDelete from '../FormDelete/P';
-import '../style.css';
-import { Button, Modal } from 'react-bootstrap';
+import React, { useState } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import MainData from '../Components/FormMainData'
+import { useLocation } from 'react-router-dom'
+import PCreat from '../FormCreat/P'
+import PInsert from '../FormInsert/P'
+import PEdit from '../FormEdit/P'
+import PDelete from '../FormDelete/P'
+import '../style.css'
+import { Button, Modal } from 'react-bootstrap'
 
 function P() {
-  const location = useLocation();
-  const [selectedData, setSelectedData] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const { state } = location;
-  const { repairName, type, model, name } = state;
+  const location = useLocation()
+  const [selectedData, setSelectedData] = useState(null)
+  const [selectedIndex, setSelectedIndex] = useState(null)
+  const [modals, setModals] = useState({
+    showModal: false,
+    showModal2: false,
+    showModal3: false,
+    showModal4: false,
+    showActionModal: false,
+  })
+  const [editData, setEditData] = useState(null)
+  const { state } = location
+  const { repairName, type, model, name } = state
 
   const formtitle = (model) => {
     switch (model) {
       case 'L機':
-        return 'L';
+        return 'L'
       case '鳳凰':
-        return 'P';
+        return 'P'
       case '一段式':
-        return 'O';
+        return 'O'
       default:
-        return ''; // Default
+        return ''
     }
-  };
+  }
 
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-  const [showModal3, setShowModal3] = useState(false);
-  const [showModal4, setShowModal4] = useState(false);
-  const [showActionModal, setShowActionModal] = useState(false);
+  const openEditModal = (data) => {
+    if (data && data.id) {
+      setEditData(data)
+      setModals((prev) => ({ ...prev, showModal3: true }))
+    } else {
+      console.error('No ID found in data:', data)
+    }
+  }
 
-  const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
-
-  const handleShow2 = () => setShowModal2(true);
-  const handleClose2 = () => setShowModal2(false);
-
-  const handleShow3 = () => setShowModal3(true);
-  const handleClose3 = () => setShowModal3(false);
-
-  const handleShow4 = () => setShowModal4(true);
-  const handleClose4 = () => setShowModal4(false);
+  const toggleModal = (key) => () => {
+    setModals((prev) => ({ ...prev, [key]: !prev[key] }))
+  }
 
   const handleShowActionModal = (index) => {
-    if (selectedData && selectedData.date && selectedData.date.length > index) {
-      const item = {
-        id: selectedData.id, // 获取数据库中的 ID
-        date: selectedData.date[index],
-        pic_num: selectedData.num[index],
-        material: selectedData.thing[index],
-        problem: selectedData.problem[index],
-        fix_deal: selectedData.improve[index],
-        times: selectedData.cost[index],
-        fill_person: selectedData.who[index],
-        department: selectedData.unit[index],
-        department_director: selectedData.supervisor[index],
-        note: selectedData.note[index],
-      };
-      setSelectedIndex(index); // 保存当前行的索引
-      setShowActionModal(true);
+    if (selectedData?.date?.length > index) {
+      setSelectedIndex(index)
+      setModals((prev) => ({ ...prev, showActionModal: true }))
     }
-  };
+  }
 
   const handleCloseActionModal = () => {
-    setShowActionModal(false);
-    setSelectedIndex(null);
-  };
+    setModals((prev) => ({ ...prev, showActionModal: false }))
+    setSelectedIndex(null)
+  }
 
   const handleSave = (updatedData) => {
-    console.log('Saved Data:', updatedData);
-    // 在這裡處理保存邏輯
-    // 例如更新狀態或調用 API
-  };
+    console.log('Saved Data:', updatedData)
+    // Handle save logic
+  }
 
-  console.log('State:', state);
+  console.log('State:', state)
 
   return (
     <div className='container'>
@@ -90,24 +79,32 @@ function P() {
         form={`${formtitle(model)}P`}
       >
         {(data) => {
-          setSelectedData(data); // 設置 selectedData
+          setSelectedData(data)
+
           if (!data) {
             return (
               <div>
-                <Button variant='primary' onClick={handleShow}>
+                <Button variant='primary' onClick={toggleModal('showModal')}>
                   創建表單
                 </Button>
-                <PCreat show={showModal} handleClose={handleClose} />
+                <PCreat
+                  show={modals.showModal}
+                  handleClose={toggleModal('showModal')}
+                />
               </div>
-            );
+            )
           }
 
           return (
             <div>
-              <Button variant='info' onClick={handleShow2}>
+              <Button variant='info' onClick={toggleModal('showModal2')}>
                 上傳數據
               </Button>
-              <PInsert show={showModal2} handleClose={handleClose2} repairName={repairName} />
+              <PInsert
+                show={modals.showModal2}
+                handleClose={toggleModal('showModal2')}
+                repairName={repairName}
+              />
 
               <div className='container'>
                 <table className='table table-striped-columns' id='top1'>
@@ -141,10 +138,10 @@ function P() {
                     </tr>
                   </thead>
                   <tbody>
-                    {selectedData && selectedData.date ? (
+                    {selectedData?.date ? (
                       selectedData.date.map((_, index) => (
                         <tr
-                          key={index} // 使用索引作为 key
+                          key={index}
                           onMouseDown={() => handleShowActionModal(index)}
                           onTouchStart={() => handleShowActionModal(index)}
                         >
@@ -162,24 +159,57 @@ function P() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan='11'>沒有數據</td>
+                        <td colSpan='10'>沒有數據</td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
 
-              {/* Action Modal */}
-              <Modal show={showActionModal} onHide={handleCloseActionModal}>
+              <Modal
+                show={modals.showActionModal}
+                onHide={handleCloseActionModal}
+              >
                 <Modal.Header closeButton>
                   <Modal.Title>選擇操作</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Button variant='warning' onClick={handleShow3}>編輯</Button>
-                  <PEdit show={showModal3} handleClose={handleClose3} data={selectedData} onSave={handleSave} />
-                  {selectedIndex !== null && selectedData.date.length - 1 === selectedIndex && (
-                    <Button variant='danger' onClick={handleShow4}>刪除</Button>
-                  )}
+                  <Button variant='warning' onClick={toggleModal('showModal3')}>
+                    編輯
+                  </Button>
+                  <PEdit
+                    show={modals.showModal3}
+                    handleClose={toggleModal('showModal3')}
+                    data={
+                      selectedIndex !== null
+                        ? {
+                            index: selectedIndex,
+                            id: selectedData.id, // 确保包含 ID
+                            date: selectedData.date[selectedIndex],
+                            pic_num: selectedData.num[selectedIndex],
+                            material: selectedData.thing[selectedIndex],
+                            problem: selectedData.problem[selectedIndex],
+                            fix_deal: selectedData.improve[selectedIndex],
+                            times: selectedData.cost[selectedIndex],
+                            fill_person: selectedData.who[selectedIndex],
+                            department: selectedData.unit[selectedIndex],
+                            department_director:
+                              selectedData.supervisor[selectedIndex],
+                            note: selectedData.note[selectedIndex],
+                          }
+                        : {}
+                    }
+                    onSave={handleSave}
+                  />
+                  {selectedIndex !== null &&
+                    selectedData.date.length - 1 === selectedIndex && (
+                      <Button
+                        variant='danger'
+                        onClick={toggleModal('showModal4')}
+                      >
+                        刪除
+                      </Button>
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant='secondary' onClick={handleCloseActionModal}>
@@ -188,11 +218,11 @@ function P() {
                 </Modal.Footer>
               </Modal>
             </div>
-          );
+          )
         }}
       </MainData>
     </div>
-  );
+  )
 }
 
-export default P;
+export default P
