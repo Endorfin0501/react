@@ -31,6 +31,7 @@ const FPA = ({ show, handleClose }) => {
 
   console.log('Received model:', model) // 输出 model 值
   console.log('Model name:', modelname(model)) // 输出 modelName
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -39,6 +40,7 @@ const FPA = ({ show, handleClose }) => {
       <Modal.Body>
         <DynamicCreatForm
           fields={fields}
+          defaultValues={{}} // 确保传递了一个对象
           endpoint={`${URL}/create/`}
           modelName={modelname(model)}
         />

@@ -13,6 +13,8 @@ function P() {
   const location = useLocation()
   const [selectedData, setSelectedData] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [longPressTimer, setLongPressTimer] = useState(null)
+  const [isLongPress, setIsLongPress] = useState(false)
   const [modals, setModals] = useState({
     showModal: false,
     showModal2: false,
@@ -23,6 +25,10 @@ function P() {
   const [editData, setEditData] = useState(null)
   const { state } = location
   const { repairName, type, model, name } = state
+
+  const [startX, setStartX] = useState(0)
+  const [startY, setStartY] = useState(0)
+  const threshold = 20 // 滑动阈值
 
   const formtitle = (model) => {
     switch (model) {
@@ -62,6 +68,47 @@ function P() {
     setSelectedIndex(null)
   }
 
+  const handleLongPressStart = (index) => (event) => {
+    event.preventDefault() // Prevent default action
+    setIsLongPress(false)
+    setStartX(event.touches ? event.touches[0].clientX : event.clientX)
+    setStartY(event.touches ? event.touches[0].clientY : event.clientY)
+
+    setLongPressTimer(
+      setTimeout(() => {
+        setIsLongPress(true)
+        handleShowActionModal(index)
+      }, 1000)
+    )
+  }
+
+  const handleLongPressMove = (event) => {
+    if (longPressTimer) {
+      const moveX = event.touches ? event.touches[0].clientX : event.clientX
+      const moveY = event.touches ? event.touches[0].clientY : event.clientY
+
+      if (
+        Math.abs(moveX - startX) > threshold ||
+        Math.abs(moveY - startY) > threshold
+      ) {
+        clearTimeout(longPressTimer)
+        setLongPressTimer(null)
+        setIsLongPress(false)
+      }
+    }
+  }
+
+  const handleLongPressEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer)
+      setLongPressTimer(null)
+      if (!isLongPress) {
+        handleCloseActionModal()
+      }
+    }
+    setIsLongPress(false)
+  }
+
   const handleSave = (updatedData) => {
     console.log('Saved Data:', updatedData)
     // Handle save logic
@@ -90,6 +137,7 @@ function P() {
                 <PCreat
                   show={modals.showModal}
                   handleClose={toggleModal('showModal')}
+                  repair_name={repairName}
                 />
               </div>
             )
@@ -107,63 +155,70 @@ function P() {
               />
 
               <div className='container'>
-                <table className='table table-striped-columns' id='top1'>
-                  <thead>
-                    <tr>
-                      <th>機台編號</th>
-                      <th>製令編號</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{data.repair_name || ''}</td>
-                      <td>{data.order_num || ''}</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <table className='table table-striped-columns' id='top2'>
-                  <thead>
-                    <tr>
-                      <th>日期</th>
-                      <th>圖號</th>
-                      <th>料件名稱</th>
-                      <th>問題點與原因分析</th>
-                      <th>修改情形與後續處理</th>
-                      <th>耗費工時</th>
-                      <th>填寫人</th>
-                      <th>權責單位</th>
-                      <th>單位主管</th>
-                      <th>備註</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedData?.date ? (
-                      selectedData.date.map((_, index) => (
-                        <tr
-                          key={index}
-                          onMouseDown={() => handleShowActionModal(index)}
-                          onTouchStart={() => handleShowActionModal(index)}
-                        >
-                          <td>{selectedData.date[index] || ''}</td>
-                          <td>{selectedData.num[index] || ''}</td>
-                          <td>{selectedData.thing[index] || ''}</td>
-                          <td>{selectedData.problem[index] || ''}</td>
-                          <td>{selectedData.improve[index] || ''}</td>
-                          <td>{selectedData.cost[index] || ''}</td>
-                          <td>{selectedData.who[index] || ''}</td>
-                          <td>{selectedData.unit[index] || ''}</td>
-                          <td>{selectedData.supervisor[index] || ''}</td>
-                          <td>{selectedData.note[index] || ''}</td>
-                        </tr>
-                      ))
-                    ) : (
+                <div className='table-responsive'>
+                  <table className='table table-striped-columns' id='top1'>
+                    <thead>
                       <tr>
-                        <td colSpan='10'>沒有數據</td>
+                        <th>機台編號</th>
+                        <th>製令編號</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{data.repair_name || ''}</td>
+                        <td>{data.mo_name || ''}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <table className='table table-striped-columns' id='top2'>
+                    <thead>
+                      <tr>
+                        <th>日期</th>
+                        <th>圖號</th>
+                        <th>料件名稱</th>
+                        <th>問題點與原因分析</th>
+                        <th>修改情形與後續處理</th>
+                        <th>耗費工時</th>
+                        <th>填寫人</th>
+                        <th>權責單位</th>
+                        <th>單位主管</th>
+                        <th>備註</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedData?.date ? (
+                        selectedData.date.map((_, index) => (
+                          <tr
+                            className='no-select'
+                            key={index}
+                            onTouchStart={handleLongPressStart(index)}
+                            onTouchMove={handleLongPressMove}
+                            onTouchEnd={handleLongPressEnd}
+                            onMouseDown={handleLongPressStart(index)}
+                            onMouseMove={handleLongPressMove}
+                            onMouseUp={handleLongPressEnd}
+                          >
+                            <td>{selectedData.date[index] || ''}</td>
+                            <td>{selectedData.num[index] || ''}</td>
+                            <td>{selectedData.thing[index] || ''}</td>
+                            <td>{selectedData.problem[index] || ''}</td>
+                            <td>{selectedData.improve[index] || ''}</td>
+                            <td>{selectedData.cost[index] || ''}</td>
+                            <td>{selectedData.who[index] || ''}</td>
+                            <td>{selectedData.unit[index] || ''}</td>
+                            <td>{selectedData.supervisor[index] || ''}</td>
+                            <td>{selectedData.note[index] || ''}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan='10'>沒有數據</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               <Modal

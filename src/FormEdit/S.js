@@ -6,6 +6,16 @@ import { URL } from '../url'
 function S({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
 
+  const fields = [
+    { name: 'setup_num', placeholder: '反應、設變單號' },
+    { name: 'purpose', placeholder: '主旨' },
+    { name: 'principal', placeholder: '負責人' },
+    { name: 'date', type: 'date', placeholder: '日期' },
+    { name: 'pic_num', placeholder: '出圖圖號' },
+    { name: 'pic_name', placeholder: '圖名	' },
+    { name: 'sign', placeholder: '簽名' },
+  ]
+
   useEffect(() => {
     setEditForm(data) // 当 data 变化时更新编辑表单
   }, [data])
@@ -59,7 +69,11 @@ function S({ show, handleClose, data = {}, onSave = () => {} }) {
         <Modal.Title>编辑数据</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <DynamicEditForm formData={editForm} onChange={handleEditChange} />
+        <DynamicEditForm
+          formData={editForm}
+          onChange={handleEditChange}
+          fields={fields}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button variant='primary' onClick={handleEditSubmit}>

@@ -13,6 +13,8 @@ function S() {
   const location = useLocation()
   const [selectedData, setSelectedData] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [longPressTimer, setLongPressTimer] = useState(null)
+  const [isLongPress, setIsLongPress] = useState(false)
   const [modals, setModals] = useState({
     showModal: false,
     showModal2: false,
@@ -20,6 +22,11 @@ function S() {
     showModal4: false,
     showActionModal: false,
   })
+
+  const [startX, setStartX] = useState(0)
+  const [startY, setStartY] = useState(0)
+  const threshold = 20 // 滑动阈值
+
   const [editData, setEditData] = useState(null)
   const { state } = location
   const { repairName, type, model, name } = state
@@ -60,6 +67,47 @@ function S() {
   const handleCloseActionModal = () => {
     setModals((prev) => ({ ...prev, showActionModal: false }))
     setSelectedIndex(null)
+  }
+
+  const handleLongPressStart = (index) => (event) => {
+    event.preventDefault() // Prevent default action
+    setIsLongPress(false)
+    setStartX(event.touches ? event.touches[0].clientX : event.clientX)
+    setStartY(event.touches ? event.touches[0].clientY : event.clientY)
+
+    setLongPressTimer(
+      setTimeout(() => {
+        setIsLongPress(true)
+        handleShowActionModal(index)
+      }, 1000)
+    )
+  }
+
+  const handleLongPressMove = (event) => {
+    if (longPressTimer) {
+      const moveX = event.touches ? event.touches[0].clientX : event.clientX
+      const moveY = event.touches ? event.touches[0].clientY : event.clientY
+
+      if (
+        Math.abs(moveX - startX) > threshold ||
+        Math.abs(moveY - startY) > threshold
+      ) {
+        clearTimeout(longPressTimer)
+        setLongPressTimer(null)
+        setIsLongPress(false)
+      }
+    }
+  }
+
+  const handleLongPressEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer)
+      setLongPressTimer(null)
+      if (!isLongPress) {
+        handleCloseActionModal()
+      }
+    }
+    setIsLongPress(false)
   }
 
   const handleSave = (updatedData) => {
@@ -107,57 +155,64 @@ function S() {
               />
 
               <div className='container'>
-                <table className='table table-striped-columns' id='top1'>
-                  <thead>
-                    <tr>
-                      <th>機台編號</th>
-                      <th>製令編號</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{data.repair_name || ''}</td>
-                      <td>{data.order_num || ''}</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <table className='table table-striped-columns' id='top2'>
-                  <thead>
-                    <tr>
-                      <th>反應、設變單號</th>
-                      <th>主旨</th>
-                      <th>負責人</th>
-                      <th>日期</th>
-                      <th>出圖圖號</th>
-                      <th>圖名</th>
-                      <th>簽名</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedData?.date ? (
-                      selectedData.date.map((_, index) => (
-                        <tr
-                          key={index}
-                          onMouseDown={() => handleShowActionModal(index)}
-                          onTouchStart={() => handleShowActionModal(index)}
-                        >
-                          <td>{selectedData.setup_num[index] || ''}</td>
-                          <td>{selectedData.purpose[index] || ''}</td>
-                          <td>{selectedData.principal[index] || ''}</td>
-                          <td>{selectedData.date[index] || ''}</td>
-                          <td>{selectedData.pic_num[index] || ''}</td>
-                          <td>{selectedData.pic_name[index] || ''}</td>
-                          <td>{selectedData.sign[index] || ''}</td>
-                        </tr>
-                      ))
-                    ) : (
+                <div className='table-responsive'>
+                  <table className='table table-striped-columns' id='top1'>
+                    <thead>
                       <tr>
-                        <td colSpan='10'>沒有數據</td>
+                        <th>機台編號</th>
+                        <th>製令編號</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{data.repair_name || ''}</td>
+                        <td>{data.order_num || ''}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <table className='table table-striped-columns' id='top2'>
+                    <thead>
+                      <tr>
+                        <th>反應、設變單號</th>
+                        <th>主旨</th>
+                        <th>負責人</th>
+                        <th>日期</th>
+                        <th>出圖圖號</th>
+                        <th>圖名</th>
+                        <th>簽名</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedData?.date ? (
+                        selectedData.date.map((_, index) => (
+                          <tr
+                            className='no-select'
+                            key={index}
+                            onTouchStart={handleLongPressStart(index)}
+                            onTouchMove={handleLongPressMove}
+                            onTouchEnd={handleLongPressEnd}
+                            onMouseDown={handleLongPressStart(index)}
+                            onMouseMove={handleLongPressMove}
+                            onMouseUp={handleLongPressEnd}
+                          >
+                            <td>{selectedData.setup_num[index] || ''}</td>
+                            <td>{selectedData.purpose[index] || ''}</td>
+                            <td>{selectedData.principal[index] || ''}</td>
+                            <td>{selectedData.date[index] || ''}</td>
+                            <td>{selectedData.pic_num[index] || ''}</td>
+                            <td>{selectedData.pic_name[index] || ''}</td>
+                            <td>{selectedData.sign[index] || ''}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan='10'>沒有數據</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               <Modal

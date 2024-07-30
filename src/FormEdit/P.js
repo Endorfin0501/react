@@ -6,6 +6,19 @@ import { URL } from '../url'
 function P({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
 
+  const fields = [
+    { name: 'date', type: 'date', placeholder: '日期' },
+    { name: 'num', placeholder: '圖號' },
+    { name: 'thing', placeholder: '料件名稱' },
+    { name: 'problem', placeholder: '問題點與原因分析' },
+    { name: 'improve', placeholder: '修改情形與後續處理' },
+    { name: 'cost', placeholder: '耗費工時' },
+    { name: 'who', placeholder: '填寫人' },
+    { name: 'unit', placeholder: '權責單位' },
+    { name: 'supervisor', placeholder: '單位主管' },
+    { name: 'note', placeholder: '備註' },
+  ]
+
   useEffect(() => {
     setEditForm(data) // 当 data 变化时更新编辑表单
   }, [data])
@@ -59,7 +72,11 @@ function P({ show, handleClose, data = {}, onSave = () => {} }) {
         <Modal.Title>编辑数据</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <DynamicEditForm formData={editForm} onChange={handleEditChange} />
+        <DynamicEditForm
+          formData={editForm}
+          onChange={handleEditChange}
+          fields={fields}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button variant='primary' onClick={handleEditSubmit}>
