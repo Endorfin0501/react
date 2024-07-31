@@ -2,9 +2,26 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import DynamicEditForm from './DynamicEditForm'
 import { URL } from '../url'
+import { useLocation } from 'react-router-dom'
+
+const modelname = (model) => {
+  switch (model) {
+    case 'L機':
+      return 'LSet'
+    case '鳳凰':
+      return 'PSet'
+    case '一段式':
+      return 'OSet'
+    default:
+      return '' // 处理不匹配的情况
+  }
+}
 
 function S({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
+  const location = useLocation()
+  const { state } = location
+  const model = state?.model
 
   const fields = [
     { name: 'setup_num', placeholder: '反應、設變單號' },
@@ -37,8 +54,8 @@ function S({ show, handleClose, data = {}, onSave = () => {} }) {
     // 在请求体中包括模型名称和序列化器名称
     const payload = {
       ...editForm,
-      model: 'LSet', // 这里填入模型名称
-      serializer: 'LSetSerializer', // 这里填入序列化器名称
+      model: `${modelname(model)}`, // 这里填入模型名称
+      serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
     }
 
     try {

@@ -2,9 +2,28 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import DynamicEditForm from './DynamicEditForm'
 import { URL } from '../url'
+import { useLocation } from 'react-router-dom'
+
+const modelname = (model) => {
+  switch (model) {
+    case 'L機':
+      return 'LFieldPartAssembly'
+    case '鳳凰':
+      return 'PFieldPartAssembly'
+    case '一段式':
+      return 'OFieldPartAssembly'
+    default:
+      return '' // 处理不匹配的情况
+  }
+}
 
 function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
+  const location = useLocation()
+  const { state } = location
+  const model = state?.model
+  // console.log('Received model:', model) // 输出 model 值
+  // console.log('Model name:', modelname(model)) // 输出 modelName
 
   useEffect(() => {
     setEditForm(data) // 当 data 变化时更新编辑表单
@@ -40,10 +59,10 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
     // 在请求体中包括模型名称和序列化器名称
     const payload = {
       ...editForm,
-      model: 'LFieldPartAssembly', // 这里填入模型名称
-      serializer: 'LFieldPartAssemblySerializer', // 这里填入序列化器名称
+      model: `${modelname(model)}`, // 这里填入模型名称
+      serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
     }
-
+    console.log(payload)
     try {
       const response = await fetch(`${URL}/api/update/${editForm.id}/`, {
         method: 'PUT',
