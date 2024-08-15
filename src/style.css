@@ -132,3 +132,25 @@ h1 {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
 }
+
+
+.inspection-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inspection-table th, .inspection-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.inspection-table th {
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.inspection-table td div {
+  margin: 5px 0;
+}
+
+

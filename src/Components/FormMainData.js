@@ -72,8 +72,8 @@ function FormMainData({ repairName, name, form, children }) {
       'testdate',
       'judge',
       'teatstandards',
-      'assmbleSign',
-      'checkresult ',
+      'assemblesign',
+      'checkresult',
       'model_principal',
       'audit',
 
@@ -82,6 +82,32 @@ function FormMainData({ repairName, name, form, children }) {
       'principal',
       'pic_name',
       'sign',
+
+      'assembly',
+      'number',
+      'testitems',
+      'category',
+      'responsibilities',
+      'version',
+
+      'model',
+      'selfinspection_day',
+      'missing_day',
+      'finalinspection_day',
+      '5s_day',
+      'remark',
+      'self_check',
+      'quality_assurance',
+      'completion_date',
+      'orderitems',
+      'ordernote',
+      'orderctg',
+      'orderres',
+      'orderfir',
+      'ordersec',
+      'ordercompdate',
+      
+
     ]
 
     fieldsToParse.forEach((field) => {

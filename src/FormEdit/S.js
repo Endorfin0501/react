@@ -97,7 +97,7 @@ function S({ show, handleClose, data = {}, onSave = () => {} }) {
           保存更改
         </Button>
         <Button variant='secondary' onClick={handleClose}>
-          关闭
+          關閉
         </Button>
       </Modal.Footer>
     </Modal>

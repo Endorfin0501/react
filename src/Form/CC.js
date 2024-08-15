@@ -1,28 +1,34 @@
-import React from 'react'
-import MainData from '../Components/FormMainData'
-import { useLocation } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React, { useEffect, useState } from 'react';
+import MainData from '../Components/FormMainData';
+import GetTable from '../Components/CC/GetTable';
+import Order from '../Components/CC/order'
+import { useLocation } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CC() {
-  const location = useLocation()
+  const location = useLocation();
+  const { state } = location;
+  const { repairName, type, model, name } = state;
 
-  const { state } = location
-  const { repairName, type, model, name } = state
+  const [selectedData, setSelectedData] = useState([]);
 
   const formtitle = (model) => {
     switch (model) {
       case 'L機':
-        return 'L'
+        return 'L';
       case '鳳凰':
-        return 'P'
+        return 'P';
       case '一段式':
-        return 'O'
+        return 'O';
       default:
-        return '' // Default
+        return ''; // Default
     }
-  }
+  };
 
-  console.log(state)
+  // Ensure `selectedData` is updated correctly
+  useEffect(() => {
+    // Any side effects related to `selectedData` can go here
+  }, [selectedData]);
 
   return (
     <div>
@@ -30,17 +36,19 @@ function CC() {
       <MainData
         repairName={repairName}
         type={type}
-        form={`${formtitle(model)}CommissioningCompletes`}
+        form={`${formtitle(model)}CC`}
       >
-        {(selectedData) => (
-          <div>
-            {/* 渲染A.js组件需要的属性 */}
-            <p>Model: {selectedData && selectedData.model}</p>
-          </div>
-        )}
+        {(data) => {
+          // Avoid setting state directly in the render method
+          if (data !== selectedData) {
+            setSelectedData(data);
+          }
+        }}
       </MainData>
+      <GetTable data={selectedData} />
+      <Order data={selectedData} />
     </div>
-  )
+  );
 }
 
-export default CC
+export default CC;
