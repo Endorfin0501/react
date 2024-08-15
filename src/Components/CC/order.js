@@ -5,7 +5,7 @@ function Order({ data: propData }) {
    // 处理数组数据
    const generateTableRows = () => {
     if (!propData) {
-      return <h2>無資料...</h2>;
+      return <h2>查無資料...</h2>;
     }
   
     // 确保各字段是数组

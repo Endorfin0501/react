@@ -46,6 +46,7 @@ function CC() {
         }}
       </MainData>
       <GetTable data={selectedData} url = {`${formtitle(model)}SCC`}  />
+      <div style={{ borderTop: '2px solid black', marginTop: '10px' }}></div>
       <Order data={selectedData} />
     </div>
   );
