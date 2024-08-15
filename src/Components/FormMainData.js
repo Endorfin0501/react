@@ -137,18 +137,8 @@ function FormMainData({ repairName, name, form, children }) {
     try {
       const response = await fetch(url)
       const data = await response.json()
-      // console.log('Fetched data:', data) // 调试信息
       const parsedData = data.map(parseFields)
-      // console.log('解析后的数据:', parsedData) // 调试信息
       setData(parsedData)
-      if (repairName) {
-        const selected = parsedData.find(
-          (item) => item.repairname === repairName
-        )
-        if (selected) {
-          setSelectedData(selected)
-        }
-      }
     } catch (error) {
       console.error('Error fetching data: ', error)
     }
@@ -161,9 +151,7 @@ function FormMainData({ repairName, name, form, children }) {
   useEffect(() => {
     if (repairName) {
       const selected = data.find((item) => item.repair_name === repairName)
-      if (selected) {
-        setSelectedData(selected)
-      }
+      setSelectedData(selected || null) // 确保没有意外更新
     }
   }, [data, repairName])
 

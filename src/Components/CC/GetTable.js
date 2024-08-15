@@ -2,23 +2,27 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { URL } from '../../url';
 
-function GetTable({ data: propData }) {
+function GetTable({ data: propData, url }) {
   const [fetchedData, setFetchedData] = useState([]);
-
+ 
   useEffect(() => {
-    axios.get(`${URL}/LSCC`)
-      .then(response => {
-        setFetchedData(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
-      });
+    axios.get(`${URL}/${url}`)
+    .then(response => {
+      console.log(response.data)
+      setFetchedData(response.data);
+    })
+    .catch(error => {
+      console.error('There was an error fetching the data!', error);
+    });
   }, []);
 
-  // Ensure that tableData is always an array
-  const tableData = Array.isArray(propData) ? propData : fetchedData;
+  if (!propData) {
+    return <div><h2>表單不存在，請確認PC版是否有建置表單</h2></div>;
+  }
 
-  const groupedData = fetchedData.reduce((acc, item) => {
+  const filteredData = fetchedData.filter(item => item.version === `${parseFloat(propData.version).toFixed(1)}`);
+
+  const groupedData = filteredData.reduce((acc, item) => {
     if (!acc[item.assembly]) {
       acc[item.assembly] = [];
     }
@@ -28,11 +32,11 @@ function GetTable({ data: propData }) {
 
   let globalIndex = 1;
 
-  console.log('the data :', propData);
+  console.log('the data :', filteredData);
 
   return (
     <div>
-      <table class="table table-striped">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th>機械自檢日</th>
@@ -66,7 +70,7 @@ function GetTable({ data: propData }) {
       {Object.keys(groupedData).map((assembly) => (
         <div key={assembly}>
           <h2>{assembly}</h2>
-          <table class="table table-striped">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>項次</th>

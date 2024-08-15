@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 function Order({ data: propData }) {
-
-  console.log('the data :', propData);
 
    // 处理数组数据
    const generateTableRows = () => {
     if (!propData) {
-      return <tr><td colSpan="8">資料加載中...</td></tr>;
+      return <h2>無資料...</h2>;
     }
   
     // 确保各字段是数组

@@ -25,8 +25,8 @@ function CC() {
     }
   };
 
-  // Ensure `selectedData` is updated correctly
-  useEffect(() => {
+   // Ensure `selectedData` is updated correctly
+   useEffect(() => {
     // Any side effects related to `selectedData` can go here
   }, [selectedData]);
 
@@ -45,7 +45,7 @@ function CC() {
           }
         }}
       </MainData>
-      <GetTable data={selectedData} />
+      <GetTable data={selectedData} url = {`${formtitle(model)}SCC`}  />
       <Order data={selectedData} />
     </div>
   );
