@@ -7,12 +7,13 @@ import SInsert from '../FormInsert/S'
 import SEdit from '../FormEdit/S'
 import SDelete from '../FormDelete/S'
 import '../style.css'
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal, Alert } from 'react-bootstrap'
 
 function S() {
   const location = useLocation()
   const [selectedData, setSelectedData] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [showAlert, setShowAlert] = useState(false)
   const [longPressTimer, setLongPressTimer] = useState(null)
   const [isLongPress, setIsLongPress] = useState(false)
   const [modals, setModals] = useState({
@@ -115,11 +116,25 @@ function S() {
     // Handle save logic
   }
 
+  // 检查 lock 状态
+  const checkLockStatus = (action) => {
+    if (selectedData?.locks) {
+      setShowAlert(true) // 显示警示框
+      return false // 阻止操作
+    }
+    action() // 执行传入的操作
+  }
+
   console.log('State:', state)
 
   return (
     <div className='container'>
       <h1>{name}</h1>
+      {showAlert && (
+        <Alert variant='danger' onClose={() => setShowAlert(false)} dismissible>
+          無法進行操作，此表單已在電腦版被鎖定！ 請連絡相關人員進行解除
+        </Alert>
+      )}
 
       <MainData
         repairName={repairName}
@@ -145,7 +160,10 @@ function S() {
 
           return (
             <div>
-              <Button variant='info' onClick={toggleModal('showModal2')}>
+              <Button
+                variant='info'
+                onClick={() => checkLockStatus(() => toggleModal('showModal2')())}
+              >
                 上傳數據
               </Button>
               <SInsert
@@ -223,7 +241,9 @@ function S() {
                   <Modal.Title>選擇操作</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Button variant='warning' onClick={toggleModal('showModal3')}>
+                <Button 
+                    variant='warning'  
+                    onClick={() => checkLockStatus(() => toggleModal('showModal3')())}>
                     編輯
                   </Button>
                   <SEdit

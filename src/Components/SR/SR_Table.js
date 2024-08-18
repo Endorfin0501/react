@@ -7,7 +7,7 @@ const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standar
     return <p>No data available</p>;
   }
 
-  console.log('the selectedData', selectedData?.assemblesign || 'N/A');
+  console.log('the selectedData', selectedData?.checkresult || 'N/A');
 
   const getResultText = (value) => {
     if (value === 'pass') {

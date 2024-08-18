@@ -34,7 +34,7 @@ function SR() {
       case '鳳凰':
         return '(適用於鳳凰滑塊系列、變色龍系列)'
       case '一段式':
-        return '(CPSB-S10-3_一步法10穴拉吹機/本機3穴式生產)#檢3與2p-3有bug,radio衝突#'
+        return '(CPSB-S10-3_一步法10穴拉吹機/本機3穴式生產)'
       default:
         return '' // Default
     }
@@ -85,8 +85,8 @@ function SR() {
                 <SR_Table data={OtableData4} selectedData={selectedData} tablenum={3} radiocount={48.5} signcount={13} standard={0} />
                 <SR_Table data={OtableData5} selectedData={selectedData} tablenum={4} radiocount={67.5} signcount={17} standard={0} />
                 <SR_Table data={OtableData6} selectedData={selectedData} tablenum={5} radiocount={93.5} signcount={23} standard={0} />
-                <SR_Table data={OtableData7} selectedData={selectedData} tablenum={6} radiocount={112} signcount={28} standard={3} />
-                <SR_Table data={OtableData8} selectedData={selectedData} tablenum={7} radiocount={112} signcount={32} standard={0} />
+                <SR_Table data={OtableData7} selectedData={selectedData} tablenum={6} radiocount={110.5} signcount={28} standard={3} />
+                <SR_Table data={OtableData8} selectedData={selectedData} tablenum={7} radiocount={121.5} signcount={32} standard={0} />
               </div>
             )
           } else {

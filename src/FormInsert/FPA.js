@@ -35,7 +35,7 @@ const FPA = ({ show, handleClose, repairName }) => {
     const model = state?.model; // 从 state 中提取 model 值
 
     // console.log('Received model:', model); // 输出 model 值
-    // console.log('Model name:', modelname(model)); // 输出 modelName
+     console.log('Model name:', modelname(model)); // 输出 modelName
 
     return (
         <Modal show={show} onHide={handleClose}>

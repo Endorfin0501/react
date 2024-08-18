@@ -107,7 +107,7 @@ function FormMainData({ repairName, name, form, children }) {
       'ordersec',
       'ordercompdate',
       
-
+      'locks'
     ]
 
     fieldsToParse.forEach((field) => {

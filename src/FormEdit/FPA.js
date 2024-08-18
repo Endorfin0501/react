@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap'
 import DynamicEditForm from './DynamicEditForm'
 import { URL } from '../url'
 import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 const modelname = (model) => {
   switch (model) {
@@ -22,6 +23,8 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
   const location = useLocation()
   const { state } = location
   const model = state?.model
+  const repair_name = state?.repairName
+  console.log('repairname',repair_name)
   // console.log('Received model:', model) // 输出 model 值
   // console.log('Model name:', modelname(model)) // 输出 modelName
 
@@ -56,15 +59,26 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
       return
     }
 
-    // 在请求体中包括模型名称和序列化器名称
-    const payload = {
-      ...editForm,
-      model: `${modelname(model)}`, // 这里填入模型名称
-      serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
-    }
-    console.log(payload)
     try {
-      const response = await fetch(`${URL}/api/update/${editForm.id}/`, {
+      // 在提交前检查 locks 状态
+      const response = await axios.get(
+        `${URL}/check-locks/${encodeURIComponent(repair_name)}/${encodeURIComponent(modelname(model))}`
+      )
+      const isLocked = response.data.locks
+
+      if (isLocked) {
+        alert(' 無法進行操作，此表單已在電腦版被鎖定！ 請連絡相關人員進行解除')
+        return
+      }
+
+      // 在请求体中包括模型名称和序列化器名称
+      const payload = {
+        ...editForm,
+        model: `${modelname(model)}`, // 这里填入模型名称
+        serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
+      }
+
+      const updateResponse = await fetch(`${URL}/api/update/${editForm.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -72,19 +86,19 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
         body: JSON.stringify(payload),
       })
 
-      if (response.ok) {
-        const updatedData = await response.json()
+      if (updateResponse.ok) {
+        const updatedData = await updateResponse.json()
         onSave(updatedData) // 调用父组件的 onSave 回调
         handleClose() // 关闭模态框
         window.location.reload()
       } else {
-        console.error('Error updating item:', await response.text())
+        console.error('Error updating item:', await updateResponse.text())
       }
     } catch (error) {
       console.error('Error in handleEditSubmit:', error)
     }
   }
-
+  
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>

@@ -14,6 +14,7 @@ function Mechine() {
 
   return (
     <div className="mechine-container">
+      <h1>機台列表</h1>
       {/* <button
         type="button"
         className="btn btn-info switch-button"
