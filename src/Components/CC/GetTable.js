@@ -17,7 +17,7 @@ function GetTable({ data: propData, url }) {
   }, []);
 
   if (!propData) {
-    return <div><h2>表單不存在，請確認PC版是否有建置表單</h2></div>;
+    return <div><h2>表單不存在，請在PC版確認是否有建置表單</h2></div>;
   }
 
   const filteredData = fetchedData.filter(item => item.version === `${parseFloat(propData.version).toFixed(1)}`);

@@ -88,7 +88,7 @@ function RC() {
             !selectedData.estimated_date ||
             !Array.isArray(selectedData.estimated_date)
           ) {
-            return <h2>表單不存在，請在PC版確認是否有建置表單</h2>
+            return <h2>表單不存在，請在PC版確認是否有先建置表單</h2>
           }
 
           console.log('Selected Data in RC:', selectedData) // 调试信息

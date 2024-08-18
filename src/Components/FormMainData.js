@@ -71,7 +71,7 @@ function FormMainData({ repairName, name, form, children }) {
       'modelname',
       'testdate',
       'judge',
-      'teatstandards',
+      'teststandard',
       'assemblesign',
       'checkresult',
       'model_principal',
@@ -150,7 +150,8 @@ function FormMainData({ repairName, name, form, children }) {
 
   useEffect(() => {
     if (repairName) {
-      const selected = data.find((item) => item.repair_name === repairName)
+      const selected = data.find((item) => item.repair_name === repairName || item.repairname === repairName)
+      console.log('data',selected)
       setSelectedData(selected || null) // 确保没有意外更新
     }
   }, [data, repairName])
