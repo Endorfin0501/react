@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import MainData from '../Components/FormMainData';
-import GetTable from '../Components/CC/GetTable';
+import React, { useEffect, useState } from 'react'
+import MainData from '../Components/FormMainData'
+import GetTable from '../Components/CC/GetTable'
 import Order from '../Components/CC/order'
-import { useLocation } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import CCCreat from '../FormCreat/CC'
+import { useLocation } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { Modal, Button } from 'react-bootstrap'
 
 function CC() {
-  const location = useLocation();
-  const { state } = location;
-  const { repairName, type, model, name } = state;
+  const location = useLocation()
+  const { state } = location
+  const { repairName, type, model, name } = state
 
-  const [selectedData, setSelectedData] = useState([]);
+  const [selectedData, setSelectedData] = useState([])
+  const [showModal, setShowModal] = useState(false)
+
+  const handleModalToggle = () => {
+    setShowModal(!showModal) // 切換Modal顯示狀態
+  }
 
   const formtitle = (model) => {
     switch (model) {
       case 'L機':
-        return 'L';
+        return 'L'
       case '鳳凰':
-        return 'P';
+        return 'P'
       case '一段式':
-        return 'O';
+        return 'O'
       default:
-        return ''; // Default
+        return '' // Default
     }
-  };
+  }
 
-   // Ensure `selectedData` is updated correctly
-   useEffect(() => {
+  // Ensure `selectedData` is updated correctly
+  useEffect(() => {
     // Any side effects related to `selectedData` can go here
-  }, [selectedData]);
+  }, [selectedData])
 
   return (
     <div>
@@ -38,18 +45,50 @@ function CC() {
         type={type}
         form={`${formtitle(model)}CC`}
       >
-        {(data) => {
-          // Avoid setting state directly in the render method
-          if (data !== selectedData) {
-            setSelectedData(data);
+        {(selectedData) => {
+          if (
+            !selectedData ||
+            !selectedData.quality_assurance ||
+            !Array.isArray(selectedData.quality_assurance)
+          ) {
+            return (
+              <div>
+                <h2>表單不存在</h2>
+                <button className='btn btn-primary' onClick={handleModalToggle}>
+                  創建表單
+                </button>
+                <Modal show={showModal} onHide={handleModalToggle}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>創建表單</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <CCCreat repair_name={repairName} />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant='secondary' onClick={handleModalToggle}>
+                      關閉
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </div>
+            )
           }
+
+          console.log('Selected Data in RC:', selectedData) // 调试信息
+
+          return (
+            <div>
+              <GetTable data={selectedData} url={`${formtitle(model)}SCC`} />
+              <div
+                style={{ borderTop: '2px solid black', marginTop: '10px' }}
+              ></div>
+              <Order data={selectedData} />
+            </div>
+          )
         }}
       </MainData>
-      <GetTable data={selectedData} url = {`${formtitle(model)}SCC`}  />
-      <div style={{ borderTop: '2px solid black', marginTop: '10px' }}></div>
-      <Order data={selectedData} />
     </div>
-  );
+  )
 }
 
-export default CC;
+export default CC
