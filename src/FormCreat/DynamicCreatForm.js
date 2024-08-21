@@ -6,6 +6,7 @@ const DynamicCreatForm = ({
   defaultValues = {},
   endpoint,
   modelName,
+  repair_name,
 }) => {
   const [formData, setFormData] = useState(() => {
     const initialData = {}
@@ -13,13 +14,17 @@ const DynamicCreatForm = ({
       initialData[field.name] = defaultValues[field.name] || ''
     })
     initialData['model'] = modelName
+    initialData['repair_name'] = repair_name
     return initialData
   })
 
   const handleChange = (e) => {
     const { name, value } = e.target
     console.log(`Changed field: ${name}, Value: ${value}`) // 调试输出
-    setFormData({ ...formData, [name]: value })
+
+    // 如果字段是 repairnamew，则将值转换为大写
+    const newValue = name === 'repair_name' ? value.toUpperCase() : value
+    setFormData({ ...formData, [name]: newValue })
   }
 
   const [error, setError] = useState('')
@@ -52,7 +57,7 @@ const DynamicCreatForm = ({
             id={field.name}
             type={field.type || 'text'}
             name={field.name} // 确保 name 属性正确
-            value={formData[field.name] || ''}
+            value={formData[field.name] || formData[field.value] || ''}
             onChange={handleChange}
             placeholder={field.placeholder || field.name}
             className='form-control'

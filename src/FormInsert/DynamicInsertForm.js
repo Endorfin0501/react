@@ -22,7 +22,11 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
 
   const checkLocksStatus = async () => {
     try {
-      const response = await axios.get(`${URL}/check-locks/${encodeURIComponent(formData.repair_name)}/${encodeURIComponent(formData.model)}/`)
+      const response = await axios.get(
+        `${URL}/check-locks/${encodeURIComponent(
+          formData.repair_name
+        )}/${encodeURIComponent(formData.model)}/`
+      )
       return response.data.locks
     } catch (error) {
       console.error('Error checking locks status:', error)

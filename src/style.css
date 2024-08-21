@@ -133,13 +133,13 @@ h1 {
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
 }
 
-
 .inspection-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.inspection-table th, .inspection-table td {
+.inspection-table th,
+.inspection-table td {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -152,5 +152,3 @@ h1 {
 .inspection-table td div {
   margin: 5px 0;
 }
-
-

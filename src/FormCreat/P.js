@@ -4,13 +4,6 @@ import { URL } from '../url'
 import { Modal, Button } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 
-const fields = [
-  { name: 'repair_name', placeholder: '機台名稱' },
-  { name: 'mo_name', placeholder: '製令編號' },
-  { name: 'incharge', placeholder: '機台負責人' },
-  { name: 'dep_head', placeholder: '部門主管' },
-]
-
 const modelname = (model) => {
   switch (model) {
     case 'L機':
@@ -24,9 +17,17 @@ const modelname = (model) => {
   }
 }
 
-const P = ({ show, handleClose }) => {
+const P = ({ show, handleClose, repair_name }) => {
   const location = useLocation()
   const state = location.state
+
+  const fields = [
+    { name: 'repair_name', placeholder: '機台名稱', value: `${repair_name}` },
+    { name: 'mo_name', placeholder: '製令編號' },
+    { name: 'incharge', placeholder: '機台負責人' },
+    { name: 'dep_head', placeholder: '部門主管' },
+  ]
+
   const model = state?.model // 从 state 中提取 model 值
 
   console.log('Received model:', model) // 输出 model 值
@@ -41,6 +42,7 @@ const P = ({ show, handleClose }) => {
           fields={fields}
           endpoint={`${URL}/create/`}
           modelName={modelname(model)}
+          repair_name={repair_name}
         />
       </Modal.Body>
       <Modal.Footer>
