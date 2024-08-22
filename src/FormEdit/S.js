@@ -56,7 +56,9 @@ function S({ show, handleClose, data = {}, onSave = () => {} }) {
     try {
       // 在提交前检查 locks 状态
       const response = await axios.get(
-        `${URL}/check-locks/${encodeURIComponent(repair_name)}/${encodeURIComponent(modelname(model))}`
+        `${URL}/check-locks/${encodeURIComponent(
+          repair_name
+        )}/${encodeURIComponent(modelname(model))}`
       )
       const isLocked = response.data.locks
 
@@ -110,7 +112,7 @@ function S({ show, handleClose, data = {}, onSave = () => {} }) {
           保存更改
         </Button>
         <Button variant='secondary' onClick={handleClose}>
-        取消
+          取消
         </Button>
       </Modal.Footer>
     </Modal>

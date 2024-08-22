@@ -24,7 +24,7 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
   const { state } = location
   const model = state?.model
   const repair_name = state?.repairName
-  console.log('repairname',repair_name)
+  console.log('repairname', repair_name)
   // console.log('Received model:', model) // 输出 model 值
   // console.log('Model name:', modelname(model)) // 输出 modelName
 
@@ -62,7 +62,9 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
     try {
       // 在提交前检查 locks 状态
       const response = await axios.get(
-        `${URL}/check-locks/${encodeURIComponent(repair_name)}/${encodeURIComponent(modelname(model))}`
+        `${URL}/check-locks/${encodeURIComponent(
+          repair_name
+        )}/${encodeURIComponent(modelname(model))}`
       )
       const isLocked = response.data.locks
 
@@ -98,7 +100,7 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
       console.error('Error in handleEditSubmit:', error)
     }
   }
-  
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
