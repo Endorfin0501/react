@@ -1,42 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import DynamicEditForm from './DynamicEditForm'
-import { URL } from '../url'
+import DynamicEditForm from '../DynamicEditForm'
+import { URL } from '../../url'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 const modelname = (model) => {
-  switch (model) {
-    case 'L機':
-      return 'LPullblow'
-    case '鳳凰':
-      return 'PPullblow'
-    case '一段式':
-      return 'OPullblow'
-    default:
-      return '' // 处理不匹配的情况
-  }
-}
+    switch (model) {
+      case 'L機':
+        return 'LCommissioningCompletes';
+      case '鳳凰':
+        return 'PCommissioningCompletes';
+      case '一段式':
+        return 'OCommissioningCompletes';
+      default:
+        return ''; // 处理不匹配的情况
+    }
+  };
 
-function P({ show, handleClose, data = {}, onSave = () => {} }) {
+function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
   const location = useLocation()
   const { state } = location
   const model = state?.model
   const repair_name = state?.repairName
-
-  const fields = [
-    { name: 'date', type: 'date', placeholder: '日期' },
-    { name: 'num', placeholder: '圖號' },
-    { name: 'thing', placeholder: '料件名稱' },
-    { name: 'problem', placeholder: '問題點與原因分析' },
-    { name: 'improve', placeholder: '修改情形與後續處理' },
-    { name: 'cost', placeholder: '耗費工時' },
-    { name: 'who', placeholder: '填寫人' },
-    { name: 'unit', placeholder: '權責單位' },
-    { name: 'supervisor', placeholder: '單位主管' },
-    { name: 'note', placeholder: '備註' },
-  ]
+  console.log('data', data)
+  // console.log('Received model:', model) // 输出 model 值
+  // console.log('Model name:', modelname(model)) // 输出 modelName
 
   useEffect(() => {
     setEditForm(data) // 当 data 变化时更新编辑表单
@@ -50,6 +40,16 @@ function P({ show, handleClose, data = {}, onSave = () => {} }) {
     }))
   }
 
+  const fields = [
+    { name: 'orderitems', placeholder: '檢驗項目' },
+    { name: 'ordernote', placeholder: '備註' },
+    { name: 'orderctg', placeholder: '類別' },
+    { name: 'orderres', placeholder: '權責' },
+    { name: 'orderfir', placeholder: '自主檢查(OK/NG)' },
+    { name: 'ordersec', placeholder: '品保覆檢(OK/NG)' },
+    { name: 'ordercompdate', placeholder: '完成日期' },
+  ]
+
   const handleEditSubmit = async () => {
     if (!editForm || !editForm.id || editForm.index === undefined) {
       console.error('No ID or index found in editForm:', editForm)
@@ -59,7 +59,9 @@ function P({ show, handleClose, data = {}, onSave = () => {} }) {
     try {
       // 在提交前检查 locks 状态
       const response = await axios.get(
-        `${URL}/check-locks/${encodeURIComponent(repair_name)}/${encodeURIComponent(modelname(model))}`
+        `${URL}/check-locks/${encodeURIComponent(
+          repair_name
+        )}/${encodeURIComponent(modelname(model))}`
       )
       const isLocked = response.data.locks
 
@@ -113,11 +115,11 @@ function P({ show, handleClose, data = {}, onSave = () => {} }) {
           保存更改
         </Button>
         <Button variant='secondary' onClick={handleClose}>
-        取消
+          取消
         </Button>
       </Modal.Footer>
     </Modal>
   )
 }
 
-export default P
+export default CCEdit3

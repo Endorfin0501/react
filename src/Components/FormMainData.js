@@ -94,7 +94,7 @@ function FormMainData({ repairName, name, form, children }) {
       'selfinspection_day',
       'missing_day',
       'finalinspection_day',
-      '5s_day',
+      'number_5s_day',
       'remark',
       'self_check',
       'quality_assurance',

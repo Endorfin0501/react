@@ -74,7 +74,7 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
       // 在请求体中包括模型名称和序列化器名称
       const payload = {
         ...editForm,
-        model: `${modelname(model)}`, // 这里填入模型名称
+        models: `${modelname(model)}`, // 这里填入模型名称
         serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
       }
 

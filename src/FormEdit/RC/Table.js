@@ -64,7 +64,7 @@ function RCEdit({ selectedData, onClose, formType }) {
       // 根据实际模型和序列化器名称调整
       const payload = {
         ...formData,
-        model: modelname(model), // 填入模型名称
+        models: modelname(model), // 填入模型名称
         serializer: `${modelname(model)}Serializer`, // 填入序列化器名称
       }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MainData from '../Components/FormMainData'
-import GetTable from '../Components/CC/GetTable'
+import GetTable2 from '../Components/CC/GetTable2'
+import GetTable1 from '../Components/CC/GetTable1'
 import Order from '../Components/CC/order'
 import CCCreat from '../FormCreat/CC'
 import { useLocation } from 'react-router-dom'
@@ -78,7 +79,8 @@ function CC() {
 
           return (
             <div>
-              <GetTable data={selectedData} url={`${formtitle(model)}SCC`} />
+              <GetTable1 data={selectedData} url={`${formtitle(model)}SCC`} />
+              <GetTable2 data={selectedData} url={`${formtitle(model)}SCC`} />
               <div
                 style={{ borderTop: '2px solid black', marginTop: '10px' }}
               ></div>
