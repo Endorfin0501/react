@@ -1274,7 +1274,7 @@ export  const PtableData3 = [
           ],
         }
       ],
-      sign:["人員簽名","人員簽名" ]
+      sign:{ type: [<input placeholder="制造簽名" />, <input placeholder="品保簽名" />] }
     },
 ]; 
 //===================================================================================================
@@ -1507,7 +1507,7 @@ export  const PtableData5 = [
           ],
         }
       ],
-      sign:{type: <input placeholder="制造簽名"/>,type: <input placeholder="品保簽名"/> }
+      sign:{type: [<input placeholder="制造簽名"/>, <input placeholder="品保簽名"/> ]}
     },
 ];  
 
@@ -1535,7 +1535,7 @@ export  const PtableData6 = [
         ],
       }
     ],
-    sign:{type: <input placeholder="電控簽名"/>,type: <input placeholder="制造簽名"/> }
+    sign:{type: [<input placeholder="電控簽名"/>, <input placeholder="制造簽名"/>] }
   },
   {
     section: '檢-4',

@@ -133,11 +133,27 @@ const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standar
                               )}
                               <td>{renderStandardWithInput(standard)}</td>
                               {!isAssembleSignRendered && (
-                                <td rowSpan={section.items.reduce((acc, i) => acc + i.methods.reduce((acc, m) => acc + m.standards.length, 0), 0)}>
-                                  {selectedData?.assemblesign[assembleSignIndex.current++ + signcount] || 'N/A'}
+                                <td rowSpan={section.items.reduce((acc, i) => 
+                                  acc + i.methods.reduce((acc, m) => 
+                                    acc + m.standards.length, 0), 0)}>
+                                  
+                                  {section.sign && Array.isArray(section.sign.type) ? (
+                                    section.sign.type.map((signElement, index) => (
+                                      <React.Fragment key={index}>
+                                        {/* 渲染 `signElement` */}
+                                        {selectedData?.assemblesign[assembleSignIndex.current++ + signcount] || 'N/A'}
+                                        {index < section.sign.type.length - 1 && <br />} {/* 在多個簽名之間添加換行 */}
+                                      </React.Fragment>
+                                    ))
+                                  ) : (
+                                    selectedData?.assemblesign[assembleSignIndex.current++ + signcount] || 'N/A'
+                                  )}
+
                                   {isAssembleSignRendered = true}
                                 </td>
                               )}
+
+
                               <td>{selectedData?.checkresult ? getResultText(selectedData.checkresult[2 * (globalSIndex  + radiocount ) - 1]) : 'N/A'}</td>
                               <td>{selectedData?.checkresult ? getResultText(selectedData.checkresult[2 * (globalSIndex  + radiocount) ]) : 'N/A'}</td>
                             </tr>

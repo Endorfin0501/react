@@ -47,6 +47,7 @@ function CC() {
         form={`${formtitle(model)}CC`}
       >
         {(selectedData) => {
+        console.log('Selected Data in CC:', selectedData) // 调试信息
           if (
             !selectedData ||
             !selectedData.quality_assurance ||
@@ -75,7 +76,6 @@ function CC() {
             )
           }
 
-          console.log('Selected Data in RC:', selectedData) // 调试信息
 
           return (
             <div>

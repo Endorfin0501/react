@@ -9,7 +9,7 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
       initialData[field.name] = ''
     })
     initialData['repair_name'] = repairName || ''
-    initialData['model'] = modelName
+    initialData['models'] = modelName
     initialData['tag'] = 0 // 确保 tag 有一个默认值
     return initialData
   })
@@ -25,7 +25,7 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
       const response = await axios.get(
         `${URL}/check-locks/${encodeURIComponent(
           formData.repair_name
-        )}/${encodeURIComponent(formData.model)}/`
+        )}/${encodeURIComponent(formData.models)}/`
       )
       return response.data.locks
     } catch (error) {
@@ -69,7 +69,7 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
     const uploadUrl = `${URL}/insert/${encodeURIComponent(repairName)}/`
 
     // 准备提交的数据
-    const dataToSubmit = { ...formData, tag: tag + 1, model: modelName }
+    const dataToSubmit = { ...formData, tag: tag + 1, models: modelName }
 
     // 如果 order_num 为空，则删除该字段
     if (!dataToSubmit.order_num) {
@@ -92,6 +92,7 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
       window.location.reload()
     } catch (error) {
       console.error('There was an error uploading the data!', error)
+      console.error('the data!', dataToSubmit)
     }
   }
 

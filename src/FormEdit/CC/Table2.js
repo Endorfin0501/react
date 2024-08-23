@@ -18,7 +18,7 @@ const modelname = (model) => {
   };
 
 
-const Table2 = ({ initialData, onSave, onCancel, id }) => {
+const Table2 = ({ initialData, onSave, onCancel, id, index }) => {
   const [formData, setFormData] = useState(initialData);
   const location = useLocation();
   const { state } = location;
@@ -64,8 +64,8 @@ const Table2 = ({ initialData, onSave, onCancel, id }) => {
       }
 
       const payload = {
-        id: formData.id,
-        index: formData.index,
+        id: id,
+        index: index,
         quality_assurance: formData.quality_assurance,
         remark: formData.remark,
         self_check: formData.self_check,
@@ -89,6 +89,7 @@ const Table2 = ({ initialData, onSave, onCancel, id }) => {
         window.location.reload();
       } else {
         console.error('Error updating item:', await updateResponse.text());
+        console.error('The data:',payload)
       }
     } catch (error) {
       console.error('Error in handleEditSubmit:', error);
@@ -112,7 +113,7 @@ const Table2 = ({ initialData, onSave, onCancel, id }) => {
       ))}
 
       <Button variant="primary" type="submit">
-        保存
+        更改
       </Button>
       <Button variant="secondary" onClick={onCancel}>
         取消

@@ -152,3 +152,52 @@ h1 {
 .inspection-table td div {
   margin: 5px 0;
 }
+
+
+
+.sidebar {
+  width: 200px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100%;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.visible {
+  left: 0;
+}
+
+.sidebar .close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 50px;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+
