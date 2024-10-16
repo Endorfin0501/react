@@ -236,6 +236,22 @@ function P() {
                       )}
                     </tbody>
                   </table>
+
+                  <table className='table table-striped-columns'>
+                    <thead>
+                      <tr>
+                        <th>機台負責人</th>
+                        <th>部門主管</th>
+                      </tr>
+                    </thead> 
+                    <tbody>
+                      <tr>
+                        <td>{data.incharge || ''}</td>
+                        <td>{data.dep_head || ''}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                 </div>
               </div>
 

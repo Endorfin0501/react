@@ -1,13 +1,20 @@
-import React, { useRef } from 'react';
+import React, {useState, useRef, useEffect } from 'react';
+import '../../style.css';
+import SREdit from '../../FormEdit/SR'
+
 
 const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standard }) => {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [formData, setFormData] = useState({ name: '', description: '' });
+
   const assembleSignIndex = useRef(0);
   const assemblestandardIndex = useRef(0)
+
   if (!data || data.length === 0) {
     return <p>No data available</p>;
   }
 
-  console.log('the selectedData', selectedData?.checkresult || 'N/A');
+  console.log('the selectedData', assembleSignIndex || 'N/A');
 
   const getResultText = (value) => {
     if (value === 'pass') {
@@ -41,6 +48,7 @@ const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standar
         return '' // Default
     }
   }
+  
 
   let globalSIndex = 0;
   let globestandard = standard
@@ -64,8 +72,52 @@ const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standar
     ));
   };
 
+  const handleEditClick = () => {
+    const initialFormData = {
+      tableData: data,  // 传递整个表格数据
+      selectedData: selectedData,  // 传递selectedData
+      tablenum: tablenum,
+      radiocount: radiocount,
+      signcount: signcount,
+      standard: standard
+    };
+    setFormData(initialFormData);
+    assembleSignIndex.current = 0;  // 重置為初始值
+    assemblestandardIndex.current = 0;  // 重置為初始值
+    setShowEditModal(true);
+  };
+
+  const handleSave = () => {
+    console.log('Updated Form Data:', formData);
+    window.location.reload()
+    setShowEditModal(false);
+  };
+  
+  const handleClose = () => {
+    assembleSignIndex.current = 0;  // 重置為初始值
+    assemblestandardIndex.current = 0;  // 重置為初始值
+    setShowEditModal(false)
+  }
+
   return (
-    <div>
+    <div className="table-container">
+      <button 
+        className="edit-button"
+        onClick={handleEditClick} // 处理点击事件的函数
+      >
+        編輯
+      </button> 
+
+      <SREdit
+        show={showEditModal}
+        handleClose={handleClose}
+        formData={formData}
+        setFormData={setFormData}
+        handleSave={handleSave}
+        radiocount={radiocount}
+      />
+
+
       <table className="table table-striped">
         <thead>
           <tr>
@@ -81,7 +133,7 @@ const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standar
             <td>{selectedData?.testdate[tablenum] || 'N/A'}</td>
             <td>{selectedData?.repairname}</td>
             <td>{`${formtitle(selectedData?.modelname)}`}</td>
-            <td>合格/不合格: {getResultText2(selectedData?.judge[tablenum]) || 'N/A'}</td>
+            <td>合格/不合格: <b>{getResultText2(selectedData?.judge[tablenum]) || 'N/A'}</b></td>
             <td>第{tablenum+1}張</td>
           </tr>
         </tbody>

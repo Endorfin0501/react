@@ -272,6 +272,22 @@ function FPA() {
                       )}
                     </tbody>
                   </table>
+                  
+                  <table className='table table-striped-columns'>
+                    <thead>
+                      <tr>
+                        <th>機台負責人</th>
+                        <th>部門主管</th>
+                      </tr>
+                    </thead> 
+                    <tbody>
+                      <tr>
+                        <td>{data.model_principal || ''}</td>
+                        <td>{data.primary_director || ''}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                 </div>
               </div>
               <Modal

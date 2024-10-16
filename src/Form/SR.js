@@ -63,6 +63,22 @@ function SR() {
                 <SR_Table data={LtableData5} selectedData={selectedData} tablenum={4} radiocount={74} signcount={20} standard={37} />
                 <SR_Table data={LtableData6} selectedData={selectedData} tablenum={5} radiocount={93.5} signcount={26} standard={45} />
                 <SR_Table data={LtableData7} selectedData={selectedData} tablenum={6} radiocount={112} signcount={32} standard={0} />
+
+                <table className='table table-striped-columns'>
+                    <thead>
+                      <tr>
+                        <th>機台負責人</th>
+                        <th>審核</th>
+                      </tr>
+                    </thead> 
+                    <tbody>
+                      <tr>
+                        <td>{selectedData?.model_principal || ''}</td>
+                        <td>{selectedData?.audit || ''}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
               </div>
             )
           } else if (formtitle(model) === 'P') {
@@ -74,6 +90,22 @@ function SR() {
                 <SR_Table data={PtableData4} selectedData={selectedData} tablenum={3} radiocount={51.5} signcount={15} standard={9} />
                 <SR_Table data={PtableData5} selectedData={selectedData} tablenum={4} radiocount={67.5} signcount={20} standard={37} />
                 <SR_Table data={PtableData6} selectedData={selectedData} tablenum={5} radiocount={85.5} signcount={26} standard={11} />
+
+                <table className='table table-striped-columns'>
+                    <thead>
+                      <tr>
+                        <th>機台負責人</th>
+                        <th>審核</th>
+                      </tr>
+                    </thead> 
+                    <tbody>
+                      <tr>
+                        <td>{selectedData?.model_principal || ''}</td>
+                        <td>{selectedData?.audit || ''}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
               </div>
             )
           } else if (formtitle(model) === 'O') {
@@ -87,6 +119,22 @@ function SR() {
                 <SR_Table data={OtableData6} selectedData={selectedData} tablenum={5} radiocount={93.5} signcount={23} standard={0} />
                 <SR_Table data={OtableData7} selectedData={selectedData} tablenum={6} radiocount={110.5} signcount={28} standard={3} />
                 <SR_Table data={OtableData8} selectedData={selectedData} tablenum={7} radiocount={121.5} signcount={32} standard={0} />
+                
+                <table className='table table-striped-columns'>
+                    <thead>
+                      <tr>
+                        <th>機台負責人</th>
+                        <th>審核</th>
+                      </tr>
+                    </thead> 
+                    <tbody>
+                      <tr>
+                        <td>{selectedData?.model_principal || ''}</td>
+                        <td>{selectedData?.audit || ''}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
               </div>
             )
           } else {

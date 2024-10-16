@@ -82,7 +82,7 @@ h1 {
 }
 
 .table-striped-columns tbody td {
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   padding: 12px;
 }
@@ -198,6 +198,29 @@ h1 {
 
 .sidebar ul li a:hover {
   text-decoration: underline;
+}
+
+.table-container {
+  position: relative;
+  padding-top: 40px; /* 留出足够的空间给固定的按钮 */
+}
+
+.edit-button {
+  position:absolute;
+  width: 200px;
+  height: 40px;
+  top: 1px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-modal-lg {
+  max-width: 90% !important; /* 你可以根据需要调整宽度 */
 }
 
 

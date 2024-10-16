@@ -7,7 +7,7 @@ const CC = ({ repair_name }) => {
   const location = useLocation()
   const state = location.state
   const model = state?.model
-  console.log(repair_name)
+  console.log(state)
   // 這裡是你想要的表單字段，可以根據需求進行調整
   const fields = [
     {
