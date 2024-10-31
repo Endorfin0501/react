@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect } from 'react';
 import '../../style.css';
 import SREdit from '../../FormEdit/SR'
+import {URL} from '../../url'
 
 
 const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standard }) => {
@@ -14,7 +15,7 @@ const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standar
     return <p>No data available</p>;
   }
 
-  console.log('the selectedData', assembleSignIndex || 'N/A');
+  // console.log('the selectedData', assembleSignIndex || 'N/A');
 
   const getResultText = (value) => {
     if (value === 'pass') {
@@ -87,11 +88,53 @@ const SR_Table = ({ data, selectedData, tablenum, radiocount, signcount, standar
     setShowEditModal(true);
   };
 
-  const handleSave = () => {
-    console.log('Updated Form Data:', formData);
-    window.location.reload()
-    setShowEditModal(false);
+  const handleSave = async () => {
+    const processedAssemble = (formData.selectedData.assemblesign || [])
+  .flatMap(item => {
+    // 如果包含逗號，將其分割成多個項目
+    if (typeof item === 'string' && item.includes(',')) {
+      return item.split(',').map(subItem => subItem.trim());
+    }
+    return item;
+  });
+
+console.log(processedAssemble);
+
+
+    try {
+      const payload = {
+        assemblesign: processedAssemble,
+        checkresult: formData.selectedData.checkresult,
+        teststandard: formData.selectedData.teststandard, // 假設你也需要上傳 teststandard
+        table_name:"PStandardRecord",
+        RepairName:"3CE-2263",
+      };
+      
+      console.log(payload)
+
+      const response = await fetch(`${URL}/api/upload_SR/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (response.ok) {
+        // 上傳成功，關閉模態框
+        handleClose();
+        console.log('Data saved successfully');
+        window.location.reload()
+        // 根據需求，可清空 formData 或重置狀態
+        setFormData(null);
+      } else {
+        console.error('Failed to save data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
   };
+  
   
   const handleClose = () => {
     assembleSignIndex.current = 0;  // 重置為初始值

@@ -51,7 +51,7 @@ function SR() {
         form={`${formtitle(model)}SR`}
       >
          {(selectedData) => {
-          console.log('Selected Data in SR:', selectedData) // 调试信息
+          // console.log('Selected Data in SR:', selectedData) // 调试信息
           
           if (formtitle(model) === 'L') {
             return (

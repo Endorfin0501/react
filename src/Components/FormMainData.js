@@ -154,7 +154,7 @@ function FormMainData({ repairName, name, form, children }) {
         (item) =>
           item.repair_name === repairName || item.repairname === repairName
       )
-      console.log('data', selected)
+      // console.log('data', selected)
       setSelectedData(selected || null) // 确保没有意外更新
     }
   }, [data, repairName])

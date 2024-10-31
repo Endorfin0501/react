@@ -30,9 +30,8 @@ const EditModal = ({ show, handleClose, formData, setFormData, handleSave, radio
         }
       }));
     }
-  }, [formData.tableData, setFormData]);
+  }, [formData.checkresult, setFormData]);
 
-  console.log('formdata',formData.selectedData)
 
   const getCheckResultsCount = () => {
     return formData.tableData.reduce((acc, section) =>
@@ -45,45 +44,81 @@ const EditModal = ({ show, handleClose, formData, setFormData, handleSave, radio
   };
 
   const handleSignChange = (event, sectionIndex) => {
+
+     // 獲取輸入值
+  const inputValue = event.target.value;
+  console.log("Raw input value:", inputValue); // 查看原始輸入值
+
+  // 更新顯示狀態
+  setFormData(prevData => ({
+    ...prevData,
+    inputDisplay: inputValue // 直接使用輸入值進行顯示
+  }));
+
+  // 分割為數組，使用 ',' 作為分割符
+  const updatedSignValue = inputValue.split(",").map(item => item.trim());
+  console.log("Processed value split into array:", updatedSignValue); // 查看分割後的數組
+  
     const updatedSign = [...formData.selectedData.assemblesign];
-    updatedSign[sectionIndex] = event.target.value;
+    updatedSign[sectionIndex + formData.signcount] = updatedSignValue;
+    console.log("Updated assemblesign array:", updatedSign); // 查看更新後的 assemblesign
     setFormData(prevData => ({
       ...prevData,
       selectedData: { ...prevData.selectedData, assemblesign: updatedSign }
     }));
   };
 
-  const handleCheckResultChange = (event, sectionIndex, itemIndex, methodIndex, standardIndex, isInitial) => {
-    // 深拷貝 current checkresult
-    const updatedCheckResult = [...formData.selectedData.checkresult];
+  const handleCheckResultChange = (
+    event,
+    sectionIndex,
+    itemIndex,
+    methodIndex,
+    standardIndex,
+    isInitial
+  ) => {
+    const newCheckResult = [...formData.selectedData.checkresult];
   
-    // 計算每個檢查項目的長度，避免重複計算
-    const itemLength = formData.tableData[sectionIndex].items.length;
-    const methodLength = formData.tableData[sectionIndex].items[0].methods.length;
-    const standardLength = formData.tableData[sectionIndex].items[0].methods[0].standards.length;
+    // 計算 updatedGlobalIndex，以確保更新到正確位置
+    const updatedGlobalIndex = formData.tableData
+      .slice(0, sectionIndex)
+      .reduce(
+        (acc, s) =>
+          acc +
+          s.items.reduce(
+            (itemAcc, i) =>
+              itemAcc +
+              i.methods.reduce((methodAcc, m) => methodAcc + m.standards.length, 0),
+            0
+          ) * 2,
+        0
+      ) +
+      formData.tableData[sectionIndex].items
+        .slice(0, itemIndex)
+        .reduce(
+          (itemAcc, i) =>
+            itemAcc +
+            i.methods.reduce((methodAcc, m) => methodAcc + m.standards.length, 0),
+          0
+        ) * 2 +
+      formData.tableData[sectionIndex].items[itemIndex].methods
+        .slice(0, methodIndex)
+        .reduce((methodAcc, m) => methodAcc + m.standards.length, 0) * 2 +
+      standardIndex * 2;
   
-    // 計算結果索引
-    const resultIndex = (
-      sectionIndex * itemLength * methodLength * standardLength * 2 +  // 每個 section 的偏移
-      itemIndex * methodLength * standardLength * 2 +                   // 每個 item 的偏移
-      methodIndex * standardLength * 2 +                                // 每個 method 的偏移
-      standardIndex * 2 +                                               // 每個標準的偏移
-      (isInitial ? 0 : 1)                                               // 初檢 or 複檢
-    );
-  
-    // 更新選擇結果
-    updatedCheckResult[resultIndex] = event.target.value;
+    // 根據 isInitial 判斷更新初檢 (0) 或覆檢 (1)
+    newCheckResult[updatedGlobalIndex + (isInitial ? 0 : 1) + (2 * radiocount + 1)] = event.target.value;
   
     // 更新狀態
-    setFormData(prevData => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       selectedData: {
-        ...prevData.selectedData,
-        checkresult: updatedCheckResult
-      }
-    }));
+        ...formData.selectedData,
+        checkresult: newCheckResult,
+      },
+    });
   };
   
+
 
   if (!formData || !formData.tableData) {
     return null; // 如果沒有數據，早期返回
@@ -116,21 +151,62 @@ const EditModal = ({ show, handleClose, formData, setFormData, handleSave, radio
                       {item.methods.map((methodObj, methodIndex) => (
                         <React.Fragment key={methodIndex}>
                           {methodObj.standards.map((standard, standardIndex) => {
-                            const globalIndex = (
-                              sectionIndex * section.items.length * 
-                              item.methods.length * 
-                              methodObj.standards.length * 2
-                            ) + (
-                              itemIndex * item.methods.length * 
-                              methodObj.standards.length * 2
-                            ) + (
-                              methodIndex * methodObj.standards.length * 2
-                            ) + (
-                              standardIndex * 2
-                            ) + radiocount;
+                            // 在 tbody 渲染內部修改 globalIndex 計算方式
+                              const globalIndex = formData.tableData
+                              .slice(0, sectionIndex) // 計算當前 section 之前的 sections
+                              .reduce(
+                                (acc, s) =>
+                                  acc + s.items.reduce((acc, i) => acc + i.methods.reduce((acc, m) => acc + m.standards.length, 0), 0) * 2,
+                                0
+                              ) +
+                              section.items
+                                .slice(0, itemIndex)
+                                .reduce((acc, i) => acc + i.methods.reduce((acc, m) => acc + m.standards.length, 0), 0) * 2 +
+                              item.methods
+                                .slice(0, methodIndex)
+                                .reduce((acc, m) => acc + m.standards.length, 0) * 2 +
+                              (standardIndex * 2) ;
+                                // console.log('formdata',formData)
+                                // console.log('formdata',formData.selectedData)
+
+                              // 获取 {input} 的数量
+                              const inputMatches = standard.match(/{input}/g);
+                              const numberOfInputs = inputMatches ? inputMatches.length : 0;
+
+                              // 用于生成替换后的标准字符串
+                              const replacedStandard = numberOfInputs > 0
+                                ? standard.split(/{input}/g).map((part, index) => {
+                                    // 计算当前输入框的初始值
+                                    console.log(standardIndex,index)
+                                    const inputValue = formData.selectedData.teststandard[index + (formData.standard - 1)] || '';
+                                    return (
+                                      <span key={index}>
+                                        {part}
+                                        {index < numberOfInputs && (
+                                          <input
+                                            type="text"
+                                            value={inputValue} // 设置初始值
+                                            onChange={(e) => {
+                                              // 处理输入变化，更新 teststandard 数组
+                                              const updatedTestStandard = [...formData.selectedData.teststandard];
+                                              updatedTestStandard[index + (formData.standard - 1)] = e.target.value; // 更新相应的值
+                                              setFormData(prev => ({
+                                                ...prev,
+                                                selectedData: {
+                                                  ...prev.selectedData,
+                                                  teststandard: updatedTestStandard
+                                                }
+                                              }));
+                                            }}
+                                          />
+                                        )}
+                                      </span>
+                                    );
+                                  })
+                                : standard; // 如果没有 {input}，则直接返回标准文本
 
                             return (
-                              <tr key={globalIndex + (radiocount + 1)}>
+                              <tr key={globalIndex}>
                                 {standardIndex === 0 && methodIndex === 0 && itemIndex === 0 && (
                                   <td rowSpan={section.items.reduce((acc, i) => acc + i.methods.reduce((acc, m) => acc + m.standards.length, 0), 0)}>
                                     {section.section}
@@ -148,37 +224,37 @@ const EditModal = ({ show, handleClose, formData, setFormData, handleSave, radio
                                     ))}
                                   </td>
                                 )}
-                                <td>{standard}</td>
+                                <td>{replacedStandard}</td>
                                 {standardIndex === 0 && methodIndex === 0 && itemIndex === 0 && (
                                   <td rowSpan={section.items.reduce((acc, i) => acc + i.methods.reduce((acc, m) => acc + m.standards.length, 0), 0)}>
                                     <Form.Control
                                       type="text"
-                                      value={formData.selectedData.assemblesign[sectionIndex] || ''}
+                                      value={formData.selectedData.assemblesign[sectionIndex + formData.signcount] || ''}
                                       onChange={(event) => handleSignChange(event, sectionIndex)}
                                     />
                                   </td>
                                 )}
                                 <td>
-                                <Form.Control
-                                  as="select"
-                                  value={formData.selectedData.checkresult[globalIndex + (radiocount + 1)] || ''} // 初檢
-                                  onChange={(event) => handleCheckResultChange(event, sectionIndex, itemIndex, methodIndex, standardIndex, true)}
-                                >
-                                  <option value="0">選擇</option>
-                                  <option value="pass">Yes</option>
-                                  <option value="fail">No</option>
-                                </Form.Control>
+                                  <Form.Control
+                                    as="select"
+                                    value={formData.selectedData.checkresult[globalIndex + (2 * radiocount + 1)] || ''}
+                                    onChange={(event) => handleCheckResultChange(event, sectionIndex, itemIndex, methodIndex, standardIndex, true)}
+                                  >
+                                    <option value="0">選擇</option>
+                                    <option value="pass">Yes</option>
+                                    <option value="fail">No</option>
+                                  </Form.Control>
                                 </td>
                                 <td>
-                                <Form.Control
-                                  as="select"
-                                  value={formData.selectedData.checkresult[globalIndex + (radiocount + 1) + 1] || ''} // 覆檢
-                                  onChange={(event) => handleCheckResultChange(event, sectionIndex, itemIndex, methodIndex, standardIndex, false)}
-                                >
-                                  <option value="0">選擇</option>
-                                  <option value="pass">Yes</option>
-                                  <option value="fail">No</option>
-                                </Form.Control>
+                                  <Form.Control
+                                    as="select"
+                                    value={formData.selectedData.checkresult[globalIndex + 1 +(2 * radiocount + 1)] || ''}
+                                    onChange={(event) => handleCheckResultChange(event, sectionIndex, itemIndex, methodIndex, standardIndex, false)}
+                                  >
+                                    <option value="0">選擇</option>
+                                    <option value="pass">Yes</option>
+                                    <option value="fail">No</option>
+                                  </Form.Control>
                                 </td>
                               </tr>
                             );
@@ -190,6 +266,7 @@ const EditModal = ({ show, handleClose, formData, setFormData, handleSave, radio
                 </React.Fragment>
               ))}
             </tbody>
+
           </Table>
         </Form>
       </Modal.Body>
