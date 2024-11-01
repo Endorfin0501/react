@@ -47,10 +47,10 @@ const CC = ({ repair_name }) => {
       name: 'version',
       type: 'text',
       placeholder: '總成版本',
-      value: maxVersion.toString(),
+      value: maxVersion,
     },
   ]
-  console.log(maxVersion)
+  console.log('aaa', maxVersion)
 
   const modelname = (model) => {
     switch (model) {

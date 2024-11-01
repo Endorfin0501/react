@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const DynamicCreatForm = ({
@@ -9,7 +9,6 @@ const DynamicCreatForm = ({
   repair_name,
   version,
 }) => {
-  console.log('DynamicCreatForm', version)
   const [formData, setFormData] = useState(() => {
     const initialData = {}
     fields.forEach((field) => {
@@ -17,9 +16,20 @@ const DynamicCreatForm = ({
     })
     initialData['model'] = modelName
     initialData['repair_name'] = repair_name
-    initialData['version'] = version
+    initialData['version'] = version || '' // 使用空字符串作为默认值
     return initialData
   })
+
+  // 监控 version 的变化
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      version: version || '', // 确保赋值
+    }))
+  }, [version])
+
+  console.log('Data:', formData.version) // 调试输出
+  console.table(formData) // 更直观地查看 formData
 
   const handleChange = (e) => {
     const { name, value } = e.target
