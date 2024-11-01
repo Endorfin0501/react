@@ -69,7 +69,9 @@ function Order({ selectedData }) {
               onMouseDown={handleLongPressStart(index)}
               onMouseUp={handleLongPressEnd}
             >
-              <td>{selectedData.factory_order_notes[index] || ''}</td>
+              <td style={{ textAlign: 'left' }}>
+                {selectedData.factory_order_notes[index] || ''}
+              </td>
               <td>{selectedData.fill_in_person[index] || ''}</td>
               <td>{selectedData.reviewer2[index] || ''}</td>
               <td>{selectedData.result[index] || ''}</td>

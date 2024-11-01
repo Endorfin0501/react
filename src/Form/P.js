@@ -7,7 +7,7 @@ import PInsert from '../FormInsert/P'
 import PEdit from '../FormEdit/P'
 import PDelete from '../FormDelete/P'
 import '../style.css'
-import { Button, Modal, Alert} from 'react-bootstrap'
+import { Button, Modal, Alert } from 'react-bootstrap'
 
 function P() {
   const location = useLocation()
@@ -115,8 +115,8 @@ function P() {
     // Handle save logic
   }
 
-   // 检查 lock 状态
-   const checkLockStatus = (action) => {
+  // 检查 lock 状态
+  const checkLockStatus = (action) => {
     if (selectedData?.locks) {
       setShowAlert(true) // 显示警示框
       return false // 阻止操作
@@ -162,7 +162,9 @@ function P() {
             <div>
               <Button
                 variant='info'
-                onClick={() => checkLockStatus(() => toggleModal('showModal2')())}
+                onClick={() =>
+                  checkLockStatus(() => toggleModal('showModal2')())
+                }
               >
                 上傳數據
               </Button>
@@ -243,7 +245,7 @@ function P() {
                         <th>機台負責人</th>
                         <th>部門主管</th>
                       </tr>
-                    </thead> 
+                    </thead>
                     <tbody>
                       <tr>
                         <td>{data.incharge || ''}</td>
@@ -251,7 +253,6 @@ function P() {
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
               </div>
 
@@ -263,9 +264,12 @@ function P() {
                   <Modal.Title>選擇操作</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Button 
-                    variant='warning'  
-                    onClick={() => checkLockStatus(() => toggleModal('showModal3')())}>
+                  <Button
+                    variant='warning'
+                    onClick={() =>
+                      checkLockStatus(() => toggleModal('showModal3')())
+                    }
+                  >
                     編輯
                   </Button>
                   <PEdit

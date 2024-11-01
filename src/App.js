@@ -19,7 +19,7 @@ function App() {
       <ErrorBoundary>
         <Routes>
           <Route path='/Machine' element={<Machine />} />
-          <Route path='/HistoryMachine' element={<HistoryMachine />} />
+          {/* <Route path='/HistoryMachine' element={<HistoryMachine />} /> */}
           <Route path='/FormChoose' element={<FormChoose />} />
           <Route path='/FormL機+CC' element={<Cc />} />
           <Route path='/FormL機+FPA' element={<Fpa />} />

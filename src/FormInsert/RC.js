@@ -15,9 +15,9 @@ const modelname = (model) => {
     case 'L機':
       return 'LResumeCover'
     case '鳳凰':
-      return 'LResumeCover'
+      return 'PResumeCover'
     case '一段式':
-      return 'LResumeCover'
+      return 'OResumeCover'
     default:
       return '' // 处理不匹配的情况
   }

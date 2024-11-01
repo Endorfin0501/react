@@ -7,14 +7,17 @@ const DynamicCreatForm = ({
   endpoint,
   modelName,
   repair_name,
+  version,
 }) => {
+  console.log('DynamicCreatForm', version)
   const [formData, setFormData] = useState(() => {
     const initialData = {}
     fields.forEach((field) => {
-      initialData[field.name] = defaultValues[field.name] || ''
+      initialData[field.name] = field.value || defaultValues[field.name] || ''
     })
     initialData['model'] = modelName
     initialData['repair_name'] = repair_name
+    initialData['version'] = version
     return initialData
   })
 
@@ -31,6 +34,7 @@ const DynamicCreatForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log('Data uploaded successfully:', formData)
 
     try {
       const response = await axios.post(endpoint, formData, {
@@ -57,7 +61,7 @@ const DynamicCreatForm = ({
             id={field.name}
             type={field.type || 'text'}
             name={field.name} // 确保 name 属性正确
-            value={formData[field.name] || formData[field.value] || ''}
+            value={formData[field.name] || ''}
             onChange={handleChange}
             placeholder={field.placeholder || field.name}
             className='form-control'

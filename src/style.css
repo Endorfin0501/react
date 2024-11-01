@@ -82,7 +82,7 @@ h1 {
 }
 
 .table-striped-columns tbody td {
-  text-align: left;
+  text-align: center;
   vertical-align: middle;
   padding: 12px;
 }
@@ -153,8 +153,6 @@ h1 {
   margin: 5px 0;
 }
 
-
-
 .sidebar {
   width: 200px;
   background-color: #f4f4f4;
@@ -206,7 +204,7 @@ h1 {
 }
 
 .edit-button {
-  position:absolute;
+  position: absolute;
   width: 200px;
   height: 40px;
   top: 1px;
@@ -222,5 +220,3 @@ h1 {
 .custom-modal-lg {
   max-width: 90% !important; /* 你可以根据需要调整宽度 */
 }
-
-
