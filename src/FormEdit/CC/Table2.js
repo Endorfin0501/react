@@ -40,7 +40,10 @@ const Table2 = ({ initialData, onSave, onCancel, id, index }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: 
+        (name === 'self_check' || name === 'quality_assurance') 
+          ? value.toUpperCase() 
+          : value,
     });
   };
 

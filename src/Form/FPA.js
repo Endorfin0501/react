@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom'
 import FPACreat from '../FormCreat/FPA'
 import FPAInsert from '../FormInsert/FPA'
 import FPAEdit from '../FormEdit/FPA'
-import FPADelete from '../FormDelete/FPA'
 import '../style.css'
 import { Button, Modal, Alert } from 'react-bootstrap'
 
@@ -45,18 +44,6 @@ function FPA() {
     }
   }
 
-  const fields = [
-    { name: 'date', placeholder: '日期' },
-    { name: 'pic_num', placeholder: '圖號' },
-    { name: 'material', placeholder: '料件名稱' },
-    { name: 'problem', placeholder: '問題點與原因分析' },
-    { name: 'fix_deal', placeholder: '修改情形與後續處理' },
-    { name: 'times', placeholder: '耗費工時' },
-    { name: 'fill_person', placeholder: '填寫人' },
-    { name: 'department', placeholder: '權責單位' },
-    { name: 'department_director', placeholder: '單位主管' },
-    { name: 'note', placeholder: '備註' },
-  ]
 
   const toggleModal = (key) => () => {
     setModals((prev) => ({ ...prev, [key]: !prev[key] }))
@@ -118,37 +105,6 @@ function FPA() {
   const handleSave = (updatedData) => {
     console.log('Saved Data:', updatedData)
     // Handle save logic
-  }
-
-  const handleDelete = async () => {
-    if (selectedIndex !== null && selectedData?.date) {
-      // 处理删除逻辑
-      console.log('删除数据:', {
-        index: selectedIndex,
-        id: selectedData.id, // 确保包含 ID
-      })
-
-      try {
-        // 这里实现删除操作的逻辑，比如发送请求到后端
-        // 假设删除操作成功后更新状态
-        const updatedData = { ...selectedData }
-        updatedData.date.splice(selectedIndex, 1)
-        updatedData.pic_num.splice(selectedIndex, 1)
-        updatedData.material.splice(selectedIndex, 1)
-        updatedData.problem.splice(selectedIndex, 1)
-        updatedData.fix_deal.splice(selectedIndex, 1)
-        updatedData.times.splice(selectedIndex, 1)
-        updatedData.fill_person.splice(selectedIndex, 1)
-        updatedData.department.splice(selectedIndex, 1)
-        updatedData.department_director.splice(selectedIndex, 1)
-        updatedData.note.splice(selectedIndex, 1)
-
-        setSelectedData(updatedData)
-        handleCloseActionModal()
-      } catch (error) {
-        console.error('删除失败:', error)
-      }
-    }
   }
 
   // 检查 lock 状态
@@ -350,16 +306,6 @@ function FPA() {
                     : {}
                 }
                 onSave={handleSave}
-              />
-
-              <FPADelete
-                show={modals.showDeleteModal}
-                handleClose={() =>
-                  setModals((prev) => ({ ...prev, showDeleteModal: false }))
-                }
-                handleDelete={handleDelete}
-                data={selectedData}
-                index={selectedIndex}
               />
             </div>
           )

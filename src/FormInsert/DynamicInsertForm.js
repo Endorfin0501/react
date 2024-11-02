@@ -17,7 +17,14 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
   const [error, setError] = useState('')
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: 
+        name === 'result' ? value.toLowerCase() : // 将 result 转为小写
+        (name === 'orderfir' || name === 'ordersec') ? value.toUpperCase() : // 将 orderfir 和 ordersec 转为大写
+        value
+    }))
   }
 
   const checkLocksStatus = async () => {

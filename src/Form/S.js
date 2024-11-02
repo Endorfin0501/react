@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom'
 import SCreat from '../FormCreat/S'
 import SInsert from '../FormInsert/S'
 import SEdit from '../FormEdit/S'
-import SDelete from '../FormDelete/S'
 import '../style.css'
 import { Button, Modal, Alert } from 'react-bootstrap'
 
@@ -28,7 +27,6 @@ function S() {
   const [startY, setStartY] = useState(0)
   const threshold = 20 // 滑动阈值
 
-  const [editData, setEditData] = useState(null)
   const { state } = location
   const { repairName, type, model, name } = state
 
@@ -45,14 +43,6 @@ function S() {
     }
   }
 
-  const openEditModal = (data) => {
-    if (data && data.id) {
-      setEditData(data)
-      setModals((prev) => ({ ...prev, showModal3: true }))
-    } else {
-      console.error('No ID found in data:', data)
-    }
-  }
 
   const toggleModal = (key) => () => {
     setModals((prev) => ({ ...prev, [key]: !prev[key] }))
@@ -282,15 +272,14 @@ function S() {
                     }
                     onSave={handleSave}
                   />
-                  {selectedIndex !== null &&
-                    selectedData.date.length - 1 === selectedIndex && (
+
                       <Button
                         variant='danger'
                         onClick={toggleModal('showModal4')}
                       >
                         刪除
                       </Button>
-                    )}
+                    
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant='secondary' onClick={handleCloseActionModal}>

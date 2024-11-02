@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import DynamicEditForm from '../DynamicEditForm'
-import { URL } from '../../url'
+import { URL } from '../url'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 const modelname = (model) => {
-    switch (model) {
-      case 'L機':
-        return 'LCommissioningCompletes';
-      case '鳳凰':
-        return 'PCommissioningCompletes';
-      case '一段式':
-        return 'OCommissioningCompletes';
-      default:
-        return ''; // 处理不匹配的情况
-    }
-  };
+  switch (model) {
+    case 'L機':
+      return 'LFieldPartAssembly'
+    case '鳳凰':
+      return 'PFieldPartAssembly'
+    case '一段式':
+      return 'OFieldPartAssembly'
+    default:
+      return '' // 处理不匹配的情况
+  }
+}
 
-function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
+function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
   const location = useLocation()
   const { state } = location
   const model = state?.model
   const repair_name = state?.repairName
-  console.log('data', data)
+  console.log('repairname', repair_name)
   // console.log('Received model:', model) // 输出 model 值
   // console.log('Model name:', modelname(model)) // 输出 modelName
 
@@ -33,22 +32,24 @@ function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
   }, [data])
 
   const handleEditChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setEditForm((prevForm) => ({
       ...prevForm,
-      [name]: (name === 'orderfir' || name === 'ordersec') ? value.toUpperCase() : value,
-    }));
-}
-
+      [name]: value,
+    }))
+  }
 
   const fields = [
-    { name: 'orderitems', placeholder: '檢驗項目' },
-    { name: 'ordernote', placeholder: '備註' },
-    { name: 'orderctg', placeholder: '類別' },
-    { name: 'orderres', placeholder: '權責' },
-    { name: 'orderfir', placeholder: '自主檢查(OK/NG)' },
-    { name: 'ordersec', placeholder: '品保覆檢(OK/NG)' },
-    { name: 'ordercompdate', placeholder: '完成日期' },
+    { name: 'date', type: 'date', placeholder: '日期' },
+    { name: 'pic_num', placeholder: '圖號' },
+    { name: 'material', placeholder: '料件名稱' },
+    { name: 'problem', placeholder: '問題點與原因分析' },
+    { name: 'fix_deal', placeholder: '修改情形與後續處理' },
+    { name: 'times', placeholder: '耗費工時' },
+    { name: 'fill_person', placeholder: '填寫人' },
+    { name: 'department', placeholder: '權責單位' },
+    { name: 'department_director', placeholder: '單位主管' },
+    { name: 'note', placeholder: '備註' },
   ]
 
   const handleEditSubmit = async () => {
@@ -105,11 +106,6 @@ function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
         <Modal.Title>編輯數據</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <DynamicEditForm
-          formData={editForm}
-          onChange={handleEditChange}
-          fields={fields}
-        />
       </Modal.Body>
       <Modal.Footer>
         <Button variant='primary' onClick={handleEditSubmit}>
@@ -123,4 +119,4 @@ function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
   )
 }
 
-export default CCEdit3
+export default FPAEdit
