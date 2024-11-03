@@ -7,6 +7,8 @@ import SInsert from '../FormInsert/S'
 import SEdit from '../FormEdit/S'
 import '../style.css'
 import { Button, Modal, Alert } from 'react-bootstrap'
+import ManageEdit from '../FormManagerEdit/DynamicManageForm'
+import {URL} from '../url'
 
 function S() {
   const location = useLocation()
@@ -15,6 +17,7 @@ function S() {
   const [showAlert, setShowAlert] = useState(false)
   const [longPressTimer, setLongPressTimer] = useState(null)
   const [isLongPress, setIsLongPress] = useState(false)
+  const [showEditManageForm, setShowEditManageForm] = useState(false)
   const [modals, setModals] = useState({
     showModal: false,
     showModal2: false,
@@ -42,6 +45,36 @@ function S() {
         return ''
     }
   }
+
+  const handleSaveManage = (formData, formname) => {
+    const dataToSend = {
+      models: formname,
+      serializer: `${formname}Serializer`,  // 替换为实际的序列化器名称
+      ...formData
+    };
+
+    fetch(`${URL}/api/update3/${repairName}/`, { // 假设 `repairName` 是 `id`
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        alert('保存成功');
+        window.location.reload()
+        // 更新前端数据或执行其他操作
+      } else {
+        alert(`保存失敗: ${data.message}`);
+      }
+    })
+    .catch(error => {
+      console.error('保存數據失敗:', error);
+      alert('請求失敗');
+    });
+  };
 
 
   const toggleModal = (key) => () => {
@@ -273,12 +306,9 @@ function S() {
                     onSave={handleSave}
                   />
 
-                      <Button
-                        variant='danger'
-                        onClick={toggleModal('showModal4')}
-                      >
-                        刪除
-                      </Button>
+                  <Button onClick={() => setShowEditManageForm(true)}>
+                    編輯 主管負責人/主管
+                  </Button>
                     
                 </Modal.Body>
                 <Modal.Footer>
@@ -287,6 +317,18 @@ function S() {
                   </Button>
                 </Modal.Footer>
               </Modal>
+              <ManageEdit
+                show={showEditManageForm}
+                handleClose={() => setShowEditManageForm(false)}
+                currentData={{
+                  model_principal: data.model_principal,
+                  primary_director: data.primary_director
+                }}
+                repairName={repairName}  // 传递 repair_name
+                model={model}            // 传递 model
+                machinetype='Set'
+                onSave={handleSaveManage}
+              />
             </div>
           )
         }}

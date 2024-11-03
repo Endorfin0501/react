@@ -22,7 +22,7 @@ function App() {
           {/* <Route path='/HistoryMachine' element={<HistoryMachine />} /> */}
           <Route path='/FormChoose' element={<FormChoose />} />
           <Route path='/FormL機+CC' element={<Cc />} />
-          <Route path='/FormL機+FPA' element={<Fpa />} />
+          <Route path='/FormL機+FPA/:repairname' element={<Fpa />} />
           <Route path='/FormL機+P' element={<P />} />
           <Route path='/FormL機+RC' element={<Rc />} />
           <Route path='/FormL機+S' element={<S />} />

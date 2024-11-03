@@ -5,6 +5,9 @@ import { useLocation } from 'react-router-dom'
 import PCreat from '../FormCreat/P'
 import PInsert from '../FormInsert/P'
 import PEdit from '../FormEdit/P'
+import ManageEdit from '../FormManagerEdit/P'
+import {URL} from '../url'
+
 
 import '../style.css'
 import { Button, Modal, Alert } from 'react-bootstrap'
@@ -16,6 +19,8 @@ function P() {
   const [showAlert, setShowAlert] = useState(false)
   const [longPressTimer, setLongPressTimer] = useState(null)
   const [isLongPress, setIsLongPress] = useState(false)
+  const [showEditManageForm, setShowEditManageForm] = useState(false)
+
   const [modals, setModals] = useState({
     showModal: false,
     showModal2: false,
@@ -43,6 +48,37 @@ function P() {
         return ''
     }
   }
+
+  const handleSaveManage = (formData, formname) => {
+    const dataToSend = {
+      models: formname,
+      serializer: `${formname}Serializer`,  // 替换为实际的序列化器名称
+      ...formData
+    };
+    console.log(dataToSend)
+
+    fetch(`${URL}/api/update3/${repairName}/`, { // 假设 `repairName` 是 `id`
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        alert('保存成功');
+        window.location.reload()
+        // 更新前端数据或执行其他操作
+      } else {
+        alert(`保存失敗: ${data.message}`);
+      }
+    })
+    .catch(error => {
+      console.error('保存數據失敗:', error);
+      alert('請求失敗');
+    });
+  };
 
 
   const toggleModal = (key) => () => {
@@ -288,12 +324,9 @@ function P() {
                     }
                     onSave={handleSave}
                   />
-                      <Button
-                        variant='danger'
-                        onClick={toggleModal('showModal4')}
-                      >
-                        刪除
-                      </Button>
+                      <Button onClick={() => setShowEditManageForm(true)}>
+                    編輯 主管負責人/主管
+                  </Button>
                     
                 </Modal.Body>
                 <Modal.Footer>
@@ -302,6 +335,18 @@ function P() {
                   </Button>
                 </Modal.Footer>
               </Modal>
+              <ManageEdit
+                show={showEditManageForm}
+                handleClose={() => setShowEditManageForm(false)}
+                currentData={{
+                  incharge: data.incharge,
+                  dep_head: data.dep_head
+                }}
+                repairName={repairName}  // 传递 repair_name
+                model={model}            // 传递 model
+                machinetype='Pullblow'
+                onSave={handleSaveManage}
+              />
             </div>
           )
         }}

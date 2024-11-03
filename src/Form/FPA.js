@@ -5,8 +5,10 @@ import { useLocation } from 'react-router-dom'
 import FPACreat from '../FormCreat/FPA'
 import FPAInsert from '../FormInsert/FPA'
 import FPAEdit from '../FormEdit/FPA'
+import ManageEdit from '../FormManagerEdit/DynamicManageForm'
 import '../style.css'
 import { Button, Modal, Alert } from 'react-bootstrap'
+import {URL} from '../url'
 
 function FPA() {
   const location = useLocation()
@@ -15,6 +17,7 @@ function FPA() {
   const [longPressTimer, setLongPressTimer] = useState(null)
   const [showAlert, setShowAlert] = useState(false)
   const [isLongPress, setIsLongPress] = useState(false)
+  const [showEditManageForm, setShowEditManageForm] = useState(false)
   const [modals, setModals] = useState({
     showModal: false,
     showModal2: false,
@@ -43,6 +46,37 @@ function FPA() {
         return ''
     }
   }
+
+  const handleSaveManage = (formData, formname) => {
+    const dataToSend = {
+      models: formname,
+      serializer: `${formname}Serializer`,  // 替换为实际的序列化器名称
+      ...formData
+    };
+
+    fetch(`${URL}/api/update3/${repairName}/`, { // 假设 `repairName` 是 `id`
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        alert('保存成功');
+        window.location.reload()
+        // 更新前端数据或执行其他操作
+      } else {
+        alert(`保存失敗: ${data.message}`);
+      }
+    })
+    .catch(error => {
+      console.error('保存數據失敗:', error);
+      alert('請求失敗');
+    });
+  };
+
 
 
   const toggleModal = (key) => () => {
@@ -260,21 +294,9 @@ function FPA() {
                   >
                     編輯
                   </Button>
-                  {selectedIndex !== null &&
-                    selectedIndex === selectedData.date.length - 1 && (
-                      <Button
-                        variant='danger'
-                        onClick={() =>
-                          setModals((prev) => ({
-                            ...prev,
-                            showDeleteModal: true,
-                          }))
-                        }
-                        style={{ marginLeft: '10px' }}
-                      >
-                        刪除
-                      </Button>
-                    )}
+                  <Button onClick={() => setShowEditManageForm(true)}>
+                    編輯 主管負責人/主管
+                  </Button>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant='secondary' onClick={handleCloseActionModal}>
@@ -306,6 +328,18 @@ function FPA() {
                     : {}
                 }
                 onSave={handleSave}
+              />
+              <ManageEdit
+                show={showEditManageForm}
+                handleClose={() => setShowEditManageForm(false)}
+                currentData={{
+                  model_principal: data.model_principal,
+                  primary_director: data.primary_director
+                }}
+                repairName={repairName}  // 传递 repair_name
+                model={model}            // 传递 model
+                machinetype='FieldPartAssembly'
+                onSave={handleSaveManage}
               />
             </div>
           )
