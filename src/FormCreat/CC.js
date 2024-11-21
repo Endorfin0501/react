@@ -42,7 +42,6 @@ const CC = ({ repair_name }) => {
       placeholder: '機台編號',
       value: `${repair_name}`,
     },
-    { name: 'dep_head', type: 'text', placeholder: '部門主管' },
     {
       name: 'version',
       type: 'text',

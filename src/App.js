@@ -4,6 +4,7 @@ import Machine from './mechine'
 import HistoryMachine from './HistoryMachine'
 import FormChoose from './FormChoose'
 import Cc from './Form/CC'
+import Cc_O from './Form/CC_O'
 import Fpa from './Form/FPA'
 import P from './Form/P'
 import Rc from './Form/RC'
@@ -22,6 +23,7 @@ function App() {
           {/* <Route path='/HistoryMachine' element={<HistoryMachine />} /> */}
           <Route path='/FormChoose' element={<FormChoose />} />
           <Route path='/FormL機+CC' element={<Cc />} />
+          <Route path='/FormL機+CC_O' element={<Cc_O />} />
           <Route path='/FormL機+FPA/:repairname' element={<Fpa />} />
           <Route path='/FormL機+P' element={<P />} />
           <Route path='/FormL機+RC' element={<Rc />} />

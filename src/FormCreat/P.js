@@ -24,8 +24,6 @@ const P = ({ show, handleClose, repair_name }) => {
   const fields = [
     { name: 'repair_name', placeholder: '機台名稱', value: `${repair_name}` },
     { name: 'mo_name', placeholder: '製令編號' },
-    { name: 'incharge', placeholder: '機台負責人' },
-    { name: 'dep_head', placeholder: '部門主管' },
   ]
 
   const model = state?.model // 从 state 中提取 model 值

@@ -25,8 +25,6 @@ const FPA = ({ show, handleClose, repair_name }) => {
   const fields = [
     { name: 'repair_name', placeholder: '機台名稱', value: `${repair_name}` },
     { name: 'order_num', placeholder: '製令編號' },
-    { name: 'model_principal', placeholder: '機台負責人' },
-    { name: 'primary_director', placeholder: '部門主管' },
   ]
 
   console.log('Received model:', model) // 输出 model 值

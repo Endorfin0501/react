@@ -176,6 +176,7 @@ function S() {
                 <SCreat
                   show={modals.showModal}
                   handleClose={toggleModal('showModal')}
+                  repair_name={repairName}
                 />
               </div>
             )
@@ -306,9 +307,9 @@ function S() {
                     onSave={handleSave}
                   />
 
-                  <Button onClick={() => setShowEditManageForm(true)}>
+                  {/* <Button onClick={() => setShowEditManageForm(true)}>
                     編輯 主管負責人/主管
-                  </Button>
+                  </Button> */}
                     
                 </Modal.Body>
                 <Modal.Footer>

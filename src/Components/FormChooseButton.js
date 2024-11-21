@@ -6,7 +6,12 @@ function FormChooseButton({ repairName, type, model }) {
 
   const handleButtonClick = (repairName, type, model, name) => {
     console.log('Clicked button:', repairName, type)
-    const url = `/Form${model}+${type}?repairName=${repairName}`
+    let url = ''
+    if(model == '一段式' && type == 'CC'){
+      url = `/Form${model}+${type}_O?repairName=${repairName}`
+    }else{
+      url = `/Form${model}+${type}?repairName=${repairName}`
+    }
     navigate(url, { state: { repairName, name, model } }, { replace: false })
   }
 

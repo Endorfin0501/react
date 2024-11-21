@@ -15,8 +15,6 @@ const RC = ({ repairName }) => {
       placeholder: '機號',
       value: `${repairName}`,
     },
-    { name: 'hertz', type: 'text', placeholder: '電壓(HZ)' },
-    { name: 'voltage', type: 'text', placeholder: '電壓(V)' },
     { name: 'prepaid_date', type: 'date', placeholder: '預交日期' },
     // 根據需要添加更多字段
   ]

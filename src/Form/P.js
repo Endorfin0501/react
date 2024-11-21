@@ -324,9 +324,9 @@ function P() {
                     }
                     onSave={handleSave}
                   />
-                      <Button onClick={() => setShowEditManageForm(true)}>
+                      {/* <Button onClick={() => setShowEditManageForm(true)}>
                     編輯 主管負責人/主管
-                  </Button>
+                  </Button> */}
                     
                 </Modal.Body>
                 <Modal.Footer>

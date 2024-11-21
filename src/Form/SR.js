@@ -140,9 +140,9 @@ function SR() {
           if (formtitle(model) === 'L') {
             return (
               <div>
-                <Button onClick={() => setShowEditManageForm(true)}>
+                {/* <Button onClick={() => setShowEditManageForm(true)}>
                     編輯 主管負責人/主管
-                  </Button>
+                  </Button> */}
                 <SR_Table
                   data={LtableData1}
                   selectedData={selectedData}
@@ -231,9 +231,9 @@ function SR() {
           } else if (formtitle(model) === 'P') {
             return (
               <div>
-                <Button onClick={() => setShowEditManageForm(true)}>
+                {/* <Button onClick={() => setShowEditManageForm(true)}>
                     編輯 主管負責人/主管
-                </Button>
+                </Button> */}
                 <SR_Table
                   data={PtableData1}
                   selectedData={selectedData}
@@ -314,9 +314,9 @@ function SR() {
           } else if (formtitle(model) === 'O') {
             return (
               <div>
-                <Button onClick={() => setShowEditManageForm(true)}>
+                {/* <Button onClick={() => setShowEditManageForm(true)}>
                     編輯 主管負責人/主管
-                  </Button>
+                  </Button> */}
                 <SR_Table
                   data={OtableData1}
                   selectedData={selectedData}

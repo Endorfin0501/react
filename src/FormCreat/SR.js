@@ -25,8 +25,6 @@ const SR = ({ show, handleClose, repair_name }) => {
 
   const fields = [
     { name: 'repairname', placeholder: '機台名稱', value: `${repair_name}` },
-    { name: 'model_principal', placeholder: '機台負責人' },
-    { name: 'audit', placeholder: '審核' },
   ]
 
   console.log('Received model:', model) // 输出 model 值
