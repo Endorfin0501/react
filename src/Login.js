@@ -10,8 +10,8 @@ const Login = () => {
 
   function goRegister() {
     // 跳转到注册页面
-    window.location.href = 'http://127.0.0.1/chumpower_worksystem/signIn.html';
-}
+    window.location.href = 'http://127.0.0.1/information_platform/signIn.html'
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -28,17 +28,24 @@ const Login = () => {
       })
       if (response.ok) {
         const data = await response.json()
-        if(data.user.permission>1){
-        // 获取当前时间
-        let now = new Date();
+        if (data.user.Authorize == 0) {
+          alert('你的帳號未啟用')
+          window.location.reload()
+        } else {
+          if (data.user.permission > 1) {
+            // 获取当前时间
+            let now = new Date()
 
-        // 设置cookie的过期时间为当前时间加1秒
-        now.setSeconds(now.getSeconds() + 3600);
-        document.cookie = "LoginStatus2=PASS; expires=" + now.toUTCString() + "; path=/"
-          // 跳转到目标页面
-        window.location.href = 'http://127.0.0.1/chumpower_worksystem/a-repairauthor.html';  
-        }else{
-          navigate('/Machine') // 登录成功后重定向到用户仪表盘或其他页面
+            // 设置cookie的过期时间为当前时间加1秒
+            now.setSeconds(now.getSeconds() + 3600)
+            document.cookie =
+              'LoginStatus2=PASS; expires=' + now.toUTCString() + '; path=/'
+            // 跳转到目标页面
+            window.location.href =
+              'http://127.0.0.1/information_platform/a-repairauthor.html'
+          } else {
+            navigate('/Machine') // 登录成功后重定向到用户仪表盘或其他页面
+          }
         }
       } else {
         // 处理登录失败的情况
@@ -48,34 +55,37 @@ const Login = () => {
       console.error('Error:', error)
     }
   }
-  
 
   return (
-    <div className="login-container">
+    <div className='login-container'>
       <h2>銓寶資訊平台系統</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className='form-group'>
           <label>
             使用者帳號:
             <input
               type='text'
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              />
+            />
           </label>
         </div>
-        <div className="form-group">
+        <div className='form-group'>
           <label>
             密碼:
             <input
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              />
+            />
           </label>
         </div>
-        <button type='submit' className='btn btn-primary'>登入</button>
-        <button type='button' className='btn btn-info' onClick={goRegister}>註冊</button>
+        <button type='submit' className='btn btn-primary'>
+          登入
+        </button>
+        <button type='button' className='btn btn-info' onClick={goRegister}>
+          註冊
+        </button>
       </form>
     </div>
   )
