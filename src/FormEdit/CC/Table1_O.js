@@ -66,7 +66,13 @@ function Table1({ initialData, onSave, onCancel }) {
         ...formData,
         models: `${modelname(model)}`, // 这里填入模型名称
         serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
+        version: formData.version
+          ? Number.isInteger(formData.version)
+            ? `${formData.version}.0`
+            : formData.version
+          : '1.0', // 如果未定义，默认值为 "0.0"
       }
+      console.log(payload)
 
       const updateResponse = await fetch(`${URL}/api/update2/${formData.id}/`, {
         method: 'POST',
