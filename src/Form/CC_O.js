@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import MainData from '../Components/FormMainData'
-import GetTable2 from '../Components/CC/GetTable2'
-import GetTable1 from '../Components/CC/GetTable1'
-import Order from '../Components/CC/order'
+import GetTable2 from '../Components/CC/GetTable2_O'
+import GetTable1 from '../Components/CC/GetTable1_O'
+import Order from '../Components/CC/order_O'
 import CCCreat from '../FormCreat/CC'
 import { useLocation } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -47,11 +47,11 @@ function CC() {
         form={`${formtitle(model)}CC`}
       >
         {(selectedData) => {
-        console.log('Selected Data in CC:', selectedData) // 调试信息
+          console.log('Selected Data in CC:', selectedData) // 调试信息
           if (
             !selectedData ||
-            !selectedData.quality_assurance ||
-            !Array.isArray(selectedData.quality_assurance)
+            !selectedData.checkresult ||
+            !Array.isArray(selectedData.checkresult)
           ) {
             return (
               <div>
@@ -75,7 +75,6 @@ function CC() {
               </div>
             )
           }
-
 
           return (
             <div>

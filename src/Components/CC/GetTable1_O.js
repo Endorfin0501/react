@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Modal, Button } from 'react-bootstrap'
-import CCEdit1 from '../../FormEdit/CC/Table1' // 确保引用了正确的编辑组件
+import CCEdit1 from '../../FormEdit/CC/Table1_O' // 确保引用了正确的编辑组件
 import { URL } from '../../url'
 
 function GetTable({ data: propData, url }) {
@@ -59,9 +59,10 @@ function GetTable({ data: propData, url }) {
       <table className='table table-striped'>
         <thead>
           <tr>
-            <th>機械自檢日</th>
-            <th>缺失確認日期</th>
-            <th>機種</th>
+            <th>出貨日期</th>
+            <th>客戶名稱</th>
+            <th>機台編號</th>
+            <th>機種名稱</th>
           </tr>
         </thead>
         <tbody>
@@ -70,16 +71,15 @@ function GetTable({ data: propData, url }) {
             onPointerUp={cancelPress}
             onPointerLeave={cancelPress}
           >
-            <td>{propData?.selfinspection_day || 'N/A'}</td>
-            <td>{propData?.missing_day || 'N/A'}</td>
+            <td>{propData?.ship_day || 'N/A'}</td>
+            <td>{propData?.country || 'N/A'}</td>
+            <td>{propData.repair_name || 'N/A'}</td>
             <td>{propData?.model || 'N/A'}</td>
           </tr>
         </tbody>
         <thead>
           <tr>
-            <th>品保終檢日</th>
-            <th>5S確認日期</th>
-            <th>機台編號</th>
+            <th>判定</th>
           </tr>
         </thead>
         <tbody>
@@ -88,9 +88,13 @@ function GetTable({ data: propData, url }) {
             onPointerUp={cancelPress}
             onPointerLeave={cancelPress}
           >
-            <td>{propData?.finalinspection_day || 'N/A'}</td>
-            <td>{propData?.number_5s_day || 'N/A'}</td>
-            <td>{propData?.repair_name || 'N/A'}</td>
+            <td>{propData?.judge || 'N/A'}</td>
+            <th>
+              Critical Flaw:嚴重缺點
+              <br /> Main Flaw:主要缺點 Second
+              <br />
+              Flaw:次要缺點
+            </th>
           </tr>
         </tbody>
       </table>

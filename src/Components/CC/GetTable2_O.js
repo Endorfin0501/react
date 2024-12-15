@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Modal, Button } from 'react-bootstrap'
-import CCEdit2 from '../../FormEdit/CC/Table2'
+import CCEdit2 from '../../FormEdit/CC/Table2_O'
 import { URL } from '../../url'
 import Sidebar from './sidebar'
 import '../../style.css'
@@ -85,12 +85,9 @@ function GetTable({ data: propData, url }) {
                 <tr>
                   <th>項次</th>
                   <th>檢驗項目</th>
-                  <th>備註</th>
-                  <th>類別</th>
-                  <th>權責</th>
-                  <th>自主檢查(OK/NG)</th>
-                  <th>品保覆檢(OK/NG)</th>
-                  <th>完成日期</th>
+                  <th>標準</th>
+                  <th>等級</th>
+                  <th>檢驗結果(OK/NG)</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,16 +106,9 @@ function GetTable({ data: propData, url }) {
                     >
                       <td>{item.number}</td>
                       <td>{item.testitems}</td>
-                      <td>{propData?.remark[currentIndex]}</td>
                       <td>{item.category}</td>
                       <td>{item.responsibilities}</td>
-                      <td>{propData?.self_check[currentIndex] || 'N/A'}</td>
-                      <td>
-                        {propData?.quality_assurance[currentIndex] || 'N/A'}
-                      </td>
-                      <td>
-                        {propData?.completion_date[currentIndex] || 'N/A'}
-                      </td>
+                      <td>{propData?.checkresult[currentIndex] || 'N/A'}</td>
                     </tr>
                   )
                 })}

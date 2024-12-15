@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { Button, Modal } from 'react-bootstrap'
-import CCInsert from '../../FormInsert/CC'
-import CCEdit3 from '../../FormEdit/CC/order' // 确保使用正确的组件
+import CCInsert from '../../FormInsert/CC_O'
+import CCEdit3 from '../../FormEdit/CC/order_O' // 确保使用正确的组件
 
 function Order({ data: propData }) {
   const [showEditModal, setShowEditModal] = useState(false)
@@ -19,29 +19,29 @@ function Order({ data: propData }) {
     }
 
     // 确保各字段是数组
-    const orderItems = Array.isArray(propData.orderitems)
-      ? propData.orderitems
+    const orderPro = Array.isArray(propData?.problems) ? propData.problems : []
+    const orderRes = Array.isArray(propData.responsibilities)
+      ? propData.responsibilities
       : []
-    const orderNotes = Array.isArray(propData.ordernote)
-      ? propData.ordernote
+    const orderPre = Array.isArray(propData.prediction)
+      ? propData.prediction
       : []
-    const orderCtg = Array.isArray(propData.orderctg) ? propData.orderctg : []
-    const orderRes = Array.isArray(propData.orderres) ? propData.orderres : []
-    const orderFir = Array.isArray(propData.orderfir) ? propData.orderfir : []
-    const orderSec = Array.isArray(propData.ordersec) ? propData.ordersec : []
-    const orderCompDate = Array.isArray(propData.ordercompdate)
-      ? propData.ordercompdate
+    const orderReal = Array.isArray(propData.reality) ? propData.reality : []
+    const orderResp = Array.isArray(propData.respcheck)
+      ? propData.respcheck
+      : []
+    const orderQC = Array.isArray(propData.qualitycheck)
+      ? propData.qualitycheck
       : []
 
     // 计算表格的最大行数
     const numRows = Math.max(
-      orderItems.length,
-      orderNotes.length,
-      orderCtg.length,
+      orderPro.length,
       orderRes.length,
-      orderFir.length,
-      orderSec.length,
-      orderCompDate.length
+      orderPre.length,
+      orderReal.length,
+      orderResp.length,
+      orderQC.length
     )
 
     return Array.from({ length: numRows }).map((_, index) => (
@@ -53,13 +53,12 @@ function Order({ data: propData }) {
         onMouseUp={handleLongPressEnd}
       >
         <td>{index + 1}</td> {/* 累计的项次 */}
-        <td>{orderItems[index] || 'N/A'}</td>
-        <td>{orderNotes[index] || 'N/A'}</td>
-        <td>{orderCtg[index] || 'N/A'}</td>
+        <td>{orderPro[index] || 'N/A'}</td>
         <td>{orderRes[index] || 'N/A'}</td>
-        <td>{orderFir[index] || 'N/A'}</td>
-        <td>{orderSec[index] || 'N/A'}</td>
-        <td>{orderCompDate[index] || 'N/A'}</td>
+        <td>{orderPre[index] || 'N/A'}</td>
+        <td>{orderReal[index] || 'N/A'}</td>
+        <td>{orderResp[index] || 'N/A'}</td>
+        <td>{orderQC[index] || 'N/A'}</td>
       </tr>
     ))
   }
@@ -85,13 +84,12 @@ function Order({ data: propData }) {
     setShowSelectModal(false)
     setEditData({
       // 根据选中的行索引设置编辑数据
-      orderitems: propData.orderitems[selectedRowIndex],
-      ordernote: propData.ordernote[selectedRowIndex],
-      orderctg: propData.orderctg[selectedRowIndex],
-      orderres: propData.orderres[selectedRowIndex],
-      orderfir: propData.orderfir[selectedRowIndex],
-      ordersec: propData.ordersec[selectedRowIndex],
-      ordercompdate: propData.ordercompdate[selectedRowIndex],
+      problems: propData.problems[selectedRowIndex],
+      responsibilities: propData.responsibilities[selectedRowIndex],
+      prediction: propData.prediction[selectedRowIndex],
+      reality: propData.reality[selectedRowIndex],
+      respcheck: propData.respcheck[selectedRowIndex],
+      qualitycheck: propData.qualitycheck[selectedRowIndex],
       id: propData.id, // 确保这里传递 id
       index: selectedRowIndex,
     })
@@ -109,14 +107,90 @@ function Order({ data: propData }) {
       <table className='table table-striped'>
         <thead>
           <tr>
-            <th>項次</th>
-            <th>檢驗項目</th>
-            <th>備註</th>
-            <th>類別</th>
-            <th>權責</th>
-            <th>自主檢查(OK/NG)</th>
-            <th>品保覆檢(OK/NG)</th>
-            <th>完成日期</th>
+            <th
+              rowSpan={2}
+              style={{
+                backgroundColor: 'lightgray',
+                border: '2px gray solid',
+                padding: '10px',
+              }}
+            >
+              項次
+            </th>
+            <th
+              rowSpan={2}
+              style={{
+                backgroundColor: 'lightgray',
+                border: '2px gray solid',
+                padding: '10px',
+              }}
+            >
+              相關問題
+            </th>
+            <th
+              rowSpan={2}
+              style={{
+                backgroundColor: 'lightgray',
+                border: '2px gray solid',
+                padding: '10px',
+              }}
+            >
+              權責
+            </th>
+            <th
+              colSpan={2}
+              style={{
+                textAlign: 'center',
+                verticalAlign: 'middle',
+                backgroundColor: 'lightgray',
+                border: '2px gray solid',
+                padding: '10px',
+              }}
+            >
+              時間管制
+            </th>
+            <th
+              colSpan={2}
+              style={{
+                textAlign: 'center',
+                verticalAlign: 'middle',
+                backgroundColor: 'lightgray',
+                border: '2px gray solid',
+                padding: '10px',
+              }}
+            >
+              檢驗結果
+            </th>
+          </tr>
+          <tr>
+            <th
+              style={{
+                backgroundColor: 'lightgray',
+              }}
+            >
+              預計完成日
+            </th>
+            <th
+              style={{
+                backgroundColor: 'lightgray',
+              }}
+            >
+              實際完成日
+            </th>
+            <th
+              style={{
+                backgroundColor: 'lightgray',
+              }}
+            >
+              責權單位確認
+            </th>
+            <th
+              style={{
+                backgroundColor: 'lightgray',
+              }}
+            >
+              品保複檢
+            </th>
           </tr>
         </thead>
         <tbody>{generateTableRows()}</tbody>

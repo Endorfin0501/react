@@ -107,6 +107,14 @@ function FormMainData({ repairName, name, form, children }) {
       'ordersec',
       'ordercompdate',
 
+      'dep_head',
+      'prediction',
+      'problems',
+      'qualitycheck',
+      'reality',
+      'respcheck',
+      'ship_day',
+
       'locks',
     ]
 
