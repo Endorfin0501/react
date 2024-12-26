@@ -40,6 +40,9 @@ const Login = () => {
             now.setSeconds(now.getSeconds() + 3600)
             document.cookie =
               'LoginStatus2=PASS; expires=' + now.toUTCString() + '; path=/'
+            document.cookie = document.cookie = `USER=${encodeURIComponent(
+              username
+            )}; expires=${now.toUTCString()}; path=/`
             // 跳转到目标页面
             window.location.href =
               'http://127.0.0.1/information_platform/a-repairauthor.html'
