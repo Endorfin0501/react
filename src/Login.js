@@ -10,7 +10,7 @@ const Login = () => {
 
   function goRegister() {
     // 跳转到注册页面
-    window.location.href = 'http://127.0.0.1/information_platform/signIn.html'
+    window.location.href = 'http://127.0.0.1/chumpower_worksystem/signIn.html'
   }
 
   const handleSubmit = async (e) => {
@@ -45,7 +45,7 @@ const Login = () => {
             )}; expires=${now.toUTCString()}; path=/`
             // 跳转到目标页面
             window.location.href =
-              'http://127.0.0.1/information_platform/a-repairauthor.html'
+              'http://127.0.0.1/chumpower_worksystem/a-repairauthor.html'
           } else {
             navigate('/Machine') // 登录成功后重定向到用户仪表盘或其他页面
           }
