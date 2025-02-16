@@ -10,7 +10,7 @@ const Login = () => {
 
   function goRegister() {
     // 跳转到注册页面
-    window.location.href = 'http://127.0.0.1/chumpower_worksystem/signIn.html'
+    window.location.href = 'http://127.0.0.1/information_platform/signIn.html'
   }
 
   const handleSubmit = async (e) => {
@@ -33,19 +33,7 @@ const Login = () => {
           window.location.reload()
         } else {
           if (data.user.permission > 1) {
-            // 获取当前时间
-            let now = new Date()
-
-            // 设置cookie的过期时间为当前时间加1秒
-            now.setSeconds(now.getSeconds() + 3600)
-            document.cookie =
-              'LoginStatus2=PASS; expires=' + now.toUTCString() + '; path=/'
-            document.cookie = document.cookie = `USER=${encodeURIComponent(
-              username
-            )}; expires=${now.toUTCString()}; path=/`
-            // 跳转到目标页面
-            window.location.href =
-              'http://127.0.0.1/chumpower_worksystem/a-repairauthor.html'
+            navigate('/Guide', { state: { name: data.user.user } })
           } else {
             navigate('/Machine') // 登录成功后重定向到用户仪表盘或其他页面
           }

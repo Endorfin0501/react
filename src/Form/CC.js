@@ -47,7 +47,7 @@ function CC() {
         form={`${formtitle(model)}CC`}
       >
         {(selectedData) => {
-        console.log('Selected Data in CC:', selectedData) // 调试信息
+          console.log('Selected Data in CC:', selectedData) // 调试信息
           if (
             !selectedData ||
             !selectedData.quality_assurance ||
@@ -76,7 +76,6 @@ function CC() {
             )
           }
 
-
           return (
             <div>
               <GetTable1 data={selectedData} url={`${formtitle(model)}SCC`} />
@@ -85,6 +84,9 @@ function CC() {
                 style={{ borderTop: '2px solid black', marginTop: '10px' }}
               ></div>
               <Order data={selectedData} />
+              <div>
+                <b>部門主管:{selectedData.dep_head}</b>
+              </div>
             </div>
           )
         }}

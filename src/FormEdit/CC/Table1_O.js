@@ -29,6 +29,7 @@ function Table1({ initialData, onSave, onCancel }) {
     { name: 'ship_day', type: 'date', placeholder: '出貨日期' },
     { name: 'country', type: 'text', placeholder: '客戶名稱' },
     { name: 'judge', type: 'text', placeholder: '判定(pass/fail)' },
+    { name: 'dep_head', type: 'text', placeholder: '部門主管' },
   ]
 
   const handleChange = (e) => {

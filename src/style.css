@@ -220,3 +220,40 @@ h1 {
 .custom-modal-lg {
   max-width: 90% !important; /* 你可以根据需要调整宽度 */
 }
+
+/* App.css */
+.button-container {
+  display: flex;
+  flex-direction: column; /* 改成垂直排列 */
+  align-items: center; /* 使按鈕置中 */
+  gap: 20px; /* 增加按鈕之間的間距 */
+  margin-top: 50px; /* 頂部間距 */
+}
+
+.custom-btn {
+  font-size: 16px; /* 設定字型大小 */
+  padding: 10px 20px; /* 設定按鈕內邊距 */
+  border-radius: 8px; /* 設定圓角 */
+  transition: all 0.3s ease; /* 加入平滑過渡效果 */
+}
+
+.custom-btn:hover {
+  transform: scale(1.05); /* 滑鼠懸停時稍微放大 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 加入陰影效果 */
+}
+
+.custom-btn:active {
+  transform: scale(1); /* 按下時回到正常大小 */
+}
+
+.btn-primary {
+  background-color: #007bff; /* 設定網頁版的按鈕顏色 */
+  border: none;
+  color: white;
+}
+
+.btn-info {
+  background-color: #17a2b8; /* 設定手機版的按鈕顏色 */
+  border: none;
+  color: white;
+}

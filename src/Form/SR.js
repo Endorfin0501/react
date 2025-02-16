@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import MainData from '../Components/FormMainData'
 import { Button, Modal, Alert } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
-import {URL} from '../url'
+import { URL } from '../url'
 import ManageEdit from '../FormManagerEdit/SR'
 
 import {
@@ -37,7 +37,6 @@ function SR() {
   const location = useLocation()
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [showEditManageForm, setShowEditManageForm] = useState(false)
-
 
   const openForm = () => {
     setIsFormOpen(true)
@@ -78,34 +77,34 @@ function SR() {
   const handleSaveManage = (formData, formname) => {
     const dataToSend = {
       models: formname,
-      serializer: `${formname}Serializer`,  // 替换为实际的序列化器名称
-      ...formData
-    };
+      serializer: `${formname}Serializer`, // 替换为实际的序列化器名称
+      ...formData,
+    }
     console.log(dataToSend)
 
-    fetch(`${URL}/api/update4/${repairName}/`, { // 假设 `repairName` 是 `id`
+    fetch(`${URL}/api/update4/${repairName}/`, {
+      // 假设 `repairName` 是 `id`
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dataToSend)
+      body: JSON.stringify(dataToSend),
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        alert('保存成功');
-        window.location.reload()
-        // 更新前端数据或执行其他操作
-      } else {
-        alert(`保存失敗: ${data.message}`);
-      }
-    })
-    .catch(error => {
-      console.error('保存數據失敗:', error);
-      alert('請求失敗');
-    });
-  };
-
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          alert('保存成功')
+          window.location.reload()
+          // 更新前端数据或执行其他操作
+        } else {
+          alert(`保存失敗: ${data.message}`)
+        }
+      })
+      .catch((error) => {
+        console.error('保存數據失敗:', error)
+        alert('請求失敗')
+      })
+  }
 
   return (
     <div>
@@ -140,9 +139,9 @@ function SR() {
           if (formtitle(model) === 'L') {
             return (
               <div>
-                {/* <Button onClick={() => setShowEditManageForm(true)}>
-                    編輯 主管負責人/主管
-                  </Button> */}
+                <Button onClick={() => setShowEditManageForm(true)}>
+                  編輯 主管負責人/主管
+                </Button>
                 <SR_Table
                   data={LtableData1}
                   selectedData={selectedData}
@@ -215,25 +214,25 @@ function SR() {
                   </tbody>
                 </table>
                 <ManageEdit
-                        show={showEditManageForm}
-                        handleClose={() => setShowEditManageForm(false)}
-                        currentData={{
-                          model_principal: selectedData.model_principal,
-                          audit: selectedData.audit
-                        }}
-                        repairName={repairName}  // 传递 repair_name
-                        model={model}            // 传递 model
-                        machinetype='StandardRecord'
-                        onSave={handleSaveManage}
-                      />
+                  show={showEditManageForm}
+                  handleClose={() => setShowEditManageForm(false)}
+                  currentData={{
+                    model_principal: selectedData.model_principal,
+                    audit: selectedData.audit,
+                  }}
+                  repairName={repairName} // 传递 repair_name
+                  model={model} // 传递 model
+                  machinetype='StandardRecord'
+                  onSave={handleSaveManage}
+                />
               </div>
             )
           } else if (formtitle(model) === 'P') {
             return (
               <div>
-                {/* <Button onClick={() => setShowEditManageForm(true)}>
-                    編輯 主管負責人/主管
-                </Button> */}
+                <Button onClick={() => setShowEditManageForm(true)}>
+                  編輯 主管負責人/主管
+                </Button>
                 <SR_Table
                   data={PtableData1}
                   selectedData={selectedData}
@@ -298,25 +297,25 @@ function SR() {
                   </tbody>
                 </table>
                 <ManageEdit
-                        show={showEditManageForm}
-                        handleClose={() => setShowEditManageForm(false)}
-                        currentData={{
-                          model_principal: selectedData.model_principal,
-                          audit: selectedData.audit
-                        }}
-                        repairName={repairName}  // 传递 repair_name
-                        model={model}            // 传递 model
-                        machinetype='StandardRecord'
-                        onSave={handleSaveManage}
-                      />
-              </div>   
+                  show={showEditManageForm}
+                  handleClose={() => setShowEditManageForm(false)}
+                  currentData={{
+                    model_principal: selectedData.model_principal,
+                    audit: selectedData.audit,
+                  }}
+                  repairName={repairName} // 传递 repair_name
+                  model={model} // 传递 model
+                  machinetype='StandardRecord'
+                  onSave={handleSaveManage}
+                />
+              </div>
             )
           } else if (formtitle(model) === 'O') {
             return (
               <div>
-                {/* <Button onClick={() => setShowEditManageForm(true)}>
-                    編輯 主管負責人/主管
-                  </Button> */}
+                <Button onClick={() => setShowEditManageForm(true)}>
+                  編輯 主管負責人/主管
+                </Button>
                 <SR_Table
                   data={OtableData1}
                   selectedData={selectedData}
@@ -396,21 +395,20 @@ function SR() {
                     </tr>
                   </tbody>
                 </table>
-              <ManageEdit
-                        show={showEditManageForm}
-                        handleClose={() => setShowEditManageForm(false)}
-                        currentData={{
-                          model_principal: selectedData.model_principal,
-                          audit: selectedData.audi
-                        }}
-                        repairName={repairName}  // 传递 repair_name
-                        model={model}            // 传递 model
-                        machinetype='StandardRecord'
-                        onSave={handleSaveManage}
-                      />
+                <ManageEdit
+                  show={showEditManageForm}
+                  handleClose={() => setShowEditManageForm(false)}
+                  currentData={{
+                    model_principal: selectedData.model_principal,
+                    audit: selectedData.audi,
+                  }}
+                  repairName={repairName} // 传递 repair_name
+                  model={model} // 传递 model
+                  machinetype='StandardRecord'
+                  onSave={handleSaveManage}
+                />
               </div>
             )
-          
           } else {
             return null
           }

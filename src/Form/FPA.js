@@ -8,7 +8,7 @@ import FPAEdit from '../FormEdit/FPA'
 import ManageEdit from '../FormManagerEdit/DynamicManageForm'
 import '../style.css'
 import { Button, Modal, Alert } from 'react-bootstrap'
-import {URL} from '../url'
+import { URL } from '../url'
 
 function FPA() {
   const location = useLocation()
@@ -50,34 +50,33 @@ function FPA() {
   const handleSaveManage = (formData, formname) => {
     const dataToSend = {
       models: formname,
-      serializer: `${formname}Serializer`,  // 替换为实际的序列化器名称
-      ...formData
-    };
+      serializer: `${formname}Serializer`, // 替换为实际的序列化器名称
+      ...formData,
+    }
 
-    fetch(`${URL}/api/update3/${repairName}/`, { // 假设 `repairName` 是 `id`
+    fetch(`${URL}/api/update3/${repairName}/`, {
+      // 假设 `repairName` 是 `id`
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dataToSend)
+      body: JSON.stringify(dataToSend),
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        alert('保存成功');
-        window.location.reload()
-        // 更新前端数据或执行其他操作
-      } else {
-        alert(`保存失敗: ${data.message}`);
-      }
-    })
-    .catch(error => {
-      console.error('保存數據失敗:', error);
-      alert('請求失敗');
-    });
-  };
-
-
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          alert('保存成功')
+          window.location.reload()
+          // 更新前端数据或执行其他操作
+        } else {
+          alert(`保存失敗: ${data.message}`)
+        }
+      })
+      .catch((error) => {
+        console.error('保存數據失敗:', error)
+        alert('請求失敗')
+      })
+  }
 
   const toggleModal = (key) => () => {
     setModals((prev) => ({ ...prev, [key]: !prev[key] }))
@@ -186,7 +185,9 @@ function FPA() {
             <div>
               <Button
                 variant='info'
-                onClick={() => checkLockStatus(() => toggleModal('showModal2')())}
+                onClick={() =>
+                  checkLockStatus(() => toggleModal('showModal2')())
+                }
               >
                 上傳數據
               </Button>
@@ -257,19 +258,19 @@ function FPA() {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan='10'>没有数据</td>
+                          <td colSpan='10'>沒有數據</td>
                         </tr>
                       )}
                     </tbody>
                   </table>
-                  
+
                   <table className='table table-striped-columns'>
                     <thead>
                       <tr>
                         <th>機台負責人</th>
                         <th>部門主管</th>
                       </tr>
-                    </thead> 
+                    </thead>
                     <tbody>
                       <tr>
                         <td>{data.model_principal || ''}</td>
@@ -277,7 +278,6 @@ function FPA() {
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
               </div>
               <Modal
@@ -288,15 +288,17 @@ function FPA() {
                   <Modal.Title>選擇操作</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Button
-                    variant="warning"
-                    onClick={() => checkLockStatus(() => toggleModal('showModal3')())}
+                  <Button
+                    variant='warning'
+                    onClick={() =>
+                      checkLockStatus(() => toggleModal('showModal3')())
+                    }
                   >
                     編輯
                   </Button>
-                  {/* <Button onClick={() => setShowEditManageForm(true)}>
+                  <Button onClick={() => setShowEditManageForm(true)}>
                     編輯 主管負責人/主管
-                  </Button> */}
+                  </Button>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant='secondary' onClick={handleCloseActionModal}>
@@ -334,10 +336,10 @@ function FPA() {
                 handleClose={() => setShowEditManageForm(false)}
                 currentData={{
                   model_principal: data.model_principal,
-                  primary_director: data.primary_director
+                  primary_director: data.primary_director,
                 }}
-                repairName={repairName}  // 传递 repair_name
-                model={model}            // 传递 model
+                repairName={repairName} // 传递 repair_name
+                model={model} // 传递 model
                 machinetype='FieldPartAssembly'
                 onSave={handleSaveManage}
               />

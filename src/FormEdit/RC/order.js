@@ -39,11 +39,11 @@ function RCEdit({ show, handleClose, data = {}, onSave = () => {} }) {
       [name]: name === 'result' ? value.toLowerCase() : value,
     }))
   }
-  
 
   const fields = [
     { name: 'factory_order_notes', placeholder: '廠訂注意事項' },
     { name: 'fill_in_person', placeholder: '填寫人' },
+    { name: 'reviewer2', placeholder: '覆核人' },
     { name: 'result', placeholder: '檢驗結果(yes/no)' },
   ]
 

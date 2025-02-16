@@ -84,6 +84,9 @@ function CC() {
                 style={{ borderTop: '2px solid black', marginTop: '10px' }}
               ></div>
               <Order data={selectedData} />
+              <div>
+                <b>部門主管:{selectedData.dep_head}</b>
+              </div>
             </div>
           )
         }}
