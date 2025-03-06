@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import React from 'react'
 import DynamicInsertForm from './DynamicInsertForm'
 import { Modal, Button } from 'react-bootstrap'
@@ -10,7 +11,7 @@ const fields = [
   { name: 'problem', placeholder: '問題點與原因分析' },
   { name: 'fix_deal', placeholder: '修改情形與後續處理' },
   { name: 'times', placeholder: '耗費工時' },
-  { name: 'fill_person', placeholder: '填寫人' },
+  { name: 'fill_person', type: 'select', placeholder: '填寫人' },
   { name: 'department', placeholder: '權責單位' },
   { name: 'department_director', placeholder: '單位主管' },
   { name: 'note', placeholder: '備註' },
@@ -30,9 +31,18 @@ const modelname = (model) => {
 }
 
 const FPA = ({ show, handleClose, repairName }) => {
+  const [users, setUsers] = useState([])
   const location = useLocation()
   const { state } = location
   const model = state?.model // 从 state 中提取 model 值
+
+  useEffect(() => {
+    const storedUsers = localStorage.getItem('username')
+    if (storedUsers) {
+      // 假設 users 是一個由逗號分隔的字符串，轉換成數組
+      setUsers(storedUsers.split(','))
+    }
+  }, [])
 
   // console.log('Received model:', model); // 输出 model 值
   console.log('Model name:', modelname(model)) // 输出 modelName
@@ -47,6 +57,7 @@ const FPA = ({ show, handleClose, repairName }) => {
           fields={fields}
           repairName={repairName}
           modelName={modelname(model)} // 使用 modelName 函数计算 modelName
+          users={users}
         />
       </Modal.Body>
       <Modal.Footer>

@@ -30,6 +30,36 @@ const DynamicCreatForm = ({ fields, formData, onChange }) => {
             : null
         }
 
+        if (type === 'select') {
+          let people = localStorage.getItem('username') // 這裡可以改成動態選項
+
+          try {
+            people = JSON.parse(people) // 嘗試解析 JSON
+          } catch (error) {
+            // 如果解析失敗，說明它是單一字串，不是 JSON
+            people = people ? [people] : [] // 轉為陣列
+          }
+
+          return (
+            <Form.Group controlId={`form${name}`} key={name}>
+              <Form.Label>{placeholder}</Form.Label>
+              <Form.Control
+                as='select'
+                name={name}
+                value={value || ''}
+                onChange={(e) => onChange(e)}
+              >
+                <option value=''>請選擇</option>
+                {people.map((person, idx) => (
+                  <option key={idx} value={person}>
+                    {person}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          )
+        }
+
         return (
           <Form.Group controlId={`form${name}`} key={name}>
             <Form.Label>{placeholder}</Form.Label>

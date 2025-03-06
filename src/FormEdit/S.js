@@ -32,7 +32,7 @@ function S({ show, handleClose, data = {}, onSave = () => {} }) {
     { name: 'date', type: 'date', placeholder: '日期' },
     { name: 'pic_num', placeholder: '出圖圖號' },
     { name: 'pic_name', placeholder: '圖名	' },
-    { name: 'sign', placeholder: '簽名' },
+    { name: 'sign', type: 'select', placeholder: '簽名' },
   ]
 
   useEffect(() => {

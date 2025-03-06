@@ -30,8 +30,10 @@ const Login = () => {
         const data = await response.json()
         if (data.user.Authorize == 0) {
           alert('你的帳號未啟用')
-          window.location.reload()
+          window.location.reload('/')
         } else {
+          // 儲存使用者名稱到 localStorage
+          localStorage.setItem('username', data.user.name)
           if (data.user.permission > 1) {
             navigate('/Guide', { state: { name: data.user.user } })
           } else {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { URL } from '../../url'
 import { useLocation } from 'react-router-dom'
@@ -24,14 +24,41 @@ function Table1({ initialData, onSave, onCancel }) {
   const model = state?.model
   const repair_name = state?.repairName
 
+  useEffect(() => {
+    // 從 localStorage 取得 'username'，假設是 JSON 格式
+    let people = localStorage.getItem('username') // 這裡可以改成動態選項
+
+    try {
+      people = JSON.parse(people) // 嘗試解析 JSON
+    } catch (error) {
+      // 如果解析失敗，說明它是單一字串，不是 JSON
+      people = people ? [people] : [] // 轉為陣列
+    }
+
+    // 更新 `fill_person` 欄位的選項
+    setFields((prevFields) => {
+      return prevFields.map((field) => {
+        if (field.name === 'dep_head') {
+          return { ...field, options: people } // 更新選項
+        }
+        return field
+      })
+    })
+  }, []) // 頁面載入時執行一次
+
   // 在这里定义特定字段及其属性
-  const fields = [
+  const [fields, setFields] = useState([
     { name: 'selfinspection_day', type: 'date', placeholder: '機械自檢日' },
     { name: 'missing_day', type: 'date', placeholder: '缺失確認日期' },
     { name: 'finalinspection_day', type: 'date', placeholder: '品保終檢日' },
     { name: 'number_5s_day', type: 'date', placeholder: '5S確認日期' },
-    { name: 'dep_head', type: 'text', placeholder: '部門主管' },
-  ]
+    {
+      name: 'dep_head',
+      type: 'select',
+      placeholder: '部門主管',
+      options: [], // 預設為空陣列
+    },
+  ])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -45,7 +72,7 @@ function Table1({ initialData, onSave, onCancel }) {
     e.preventDefault()
 
     if (!formData || !formData.id) {
-      console.error('No ID found in formData:', formData)
+      // console.error('No ID found in formData:', formData)
       return
     }
 
@@ -84,10 +111,10 @@ function Table1({ initialData, onSave, onCancel }) {
         onCancel() // 关闭模态框
         window.location.reload()
       } else {
-        console.error('Error updating item:', await updateResponse.text())
+        // console.error('Error updating item:', await updateResponse.text())
       }
     } catch (error) {
-      console.error('Error in handleEditSubmit:', error)
+      // console.error('Error in handleEditSubmit:', error)
     }
   }
 
@@ -96,13 +123,30 @@ function Table1({ initialData, onSave, onCancel }) {
       {fields.map((field) => (
         <Form.Group controlId={field.name} key={field.name}>
           <Form.Label>{field.placeholder}</Form.Label>
-          <Form.Control
-            type={field.type || 'text'} // 默认为 'text' 类型
-            name={field.name} // 使用字段的实际名称作为 name
-            value={formData?.[field.name] || ''}
-            onChange={handleChange}
-            placeholder={field.placeholder}
-          />
+
+          {field.type === 'select' ? (
+            <Form.Control
+              as='select' // 讓 Bootstrap 渲染為 <select>
+              name={field.name}
+              value={formData?.[field.name] || ''}
+              onChange={handleChange}
+            >
+              <option value=''>請選擇</option>
+              {field.options?.map((option, idx) => (
+                <option key={idx} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Form.Control>
+          ) : (
+            <Form.Control
+              type={field.type || 'text'} // 預設類型為 text
+              name={field.name}
+              value={formData?.[field.name] || ''}
+              onChange={handleChange}
+              placeholder={field.placeholder}
+            />
+          )}
         </Form.Group>
       ))}
 

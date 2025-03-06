@@ -42,8 +42,8 @@ function RCEdit({ show, handleClose, data = {}, onSave = () => {} }) {
 
   const fields = [
     { name: 'factory_order_notes', placeholder: '廠訂注意事項' },
-    { name: 'fill_in_person', placeholder: '填寫人' },
-    { name: 'reviewer2', placeholder: '覆核人' },
+    { name: 'fill_in_person', type: 'select', placeholder: '填寫人' },
+    { name: 'reviewer2', type: 'select', placeholder: '覆核人' },
     { name: 'result', placeholder: '檢驗結果(yes/no)' },
   ]
 

@@ -32,7 +32,7 @@ function P({ show, handleClose, data = {}, onSave = () => {} }) {
     { name: 'problem', placeholder: '問題點與原因分析' },
     { name: 'improve', placeholder: '修改情形與後續處理' },
     { name: 'cost', placeholder: '耗費工時' },
-    { name: 'who', placeholder: '填寫人' },
+    { name: 'who', type: 'select', placeholder: '填寫人' },
     { name: 'unit', placeholder: '權責單位' },
     { name: 'supervisor', placeholder: '單位主管' },
     { name: 'note', placeholder: '備註' },

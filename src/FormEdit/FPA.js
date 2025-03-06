@@ -47,7 +47,7 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
     { name: 'problem', placeholder: '問題點與原因分析' },
     { name: 'fix_deal', placeholder: '修改情形與後續處理' },
     { name: 'times', placeholder: '耗費工時' },
-    { name: 'fill_person', placeholder: '填寫人' },
+    { name: 'fill_person', type: 'select', placeholder: '填寫人' },
     { name: 'department', placeholder: '權責單位' },
     { name: 'department_director', placeholder: '單位主管' },
     { name: 'note', placeholder: '備註' },

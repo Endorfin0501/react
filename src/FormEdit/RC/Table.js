@@ -92,6 +92,15 @@ function RCEdit({ selectedData, onClose, formType }) {
     }
   }
 
+  let people = localStorage.getItem('username') // 這裡可以改成動態選項
+
+  try {
+    people = JSON.parse(people) // 嘗試解析 JSON
+  } catch (error) {
+    // 如果解析失敗，說明它是單一字串，不是 JSON
+    people = people ? [people] : [] // 轉為陣列
+  }
+
   return (
     <Modal show onHide={onClose}>
       <Modal.Header closeButton>
@@ -154,24 +163,38 @@ function RCEdit({ selectedData, onClose, formType }) {
                     <td>
                       {fill[index]}:
                       <Form.Control
-                        type='text'
+                        as='select' // 修正這裡，指定為 `select`
                         name={`fill_person_${index}`}
                         value={formData.fill_person[index] || ''}
                         onChange={(e) =>
                           handleArrayChange(e, index, 'fill_person')
                         }
-                      />
+                      >
+                        <option value=''>請選擇</option>
+                        {people.map((person, idx) => (
+                          <option key={idx} value={person}>
+                            {person}
+                          </option>
+                        ))}
+                      </Form.Control>
                     </td>
                     <td>
                       {revi[index]}:
                       <Form.Control
-                        type='text'
+                        as='select' // 修正這裡，指定為 `select`
                         name={`reviewer_${index}`}
                         value={formData.reviewer[index] || ''}
                         onChange={(e) =>
                           handleArrayChange(e, index, 'reviewer')
                         }
-                      />
+                      >
+                        <option value=''>請選擇</option>
+                        {people.map((person, idx) => (
+                          <option key={idx} value={person}>
+                            {person}
+                          </option>
+                        ))}
+                      </Form.Control>
                     </td>
                   </tr>
                 ))}

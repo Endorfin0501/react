@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { URL } from '../url'
 
-const DynamicInsertForm = ({ fields, repairName, modelName }) => {
+const DynamicInsertForm = ({ fields, repairName, modelName, users }) => {
   const [formData, setFormData] = useState(() => {
     const initialData = {}
     fields.forEach((field) => {
@@ -20,10 +20,12 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
     const { name, value } = e.target
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: 
-        name === 'result' ? value.toLowerCase() : // 将 result 转为小写
-        (name === 'orderfir' || name === 'ordersec') ? value.toUpperCase() : // 将 orderfir 和 ordersec 转为大写
-        value
+      [name]:
+        name === 'result'
+          ? value.toLowerCase() // 将 result 转为小写
+          : name === 'orderfir' || name === 'ordersec'
+          ? value.toUpperCase() // 将 orderfir 和 ordersec 转为大写
+          : value,
     }))
   }
 
@@ -108,17 +110,38 @@ const DynamicInsertForm = ({ fields, repairName, modelName }) => {
       {fields.map((field) => (
         <div key={field.name}>
           <label htmlFor={field.name}>{field.placeholder || field.name}</label>
-          <input
-            type={field.type || 'text'}
-            name={field.name}
-            value={formData[field.name] || ''}
-            onChange={handleChange}
-            placeholder={field.placeholder || field.name}
-            id={field.name}
-          />
+
+          {/* 根據字段類型決定是 input 還是 select */}
+          {field.type === 'select' ? (
+            <select
+              name={field.name}
+              value={formData[field.name] || ''}
+              onChange={handleChange}
+              id={field.name}
+              className='form-select'
+            >
+              <option value=''>請選擇</option>
+              {users.map((user, index) => (
+                <option key={index} value={user}>
+                  {user}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type={field.type || 'text'}
+              name={field.name}
+              value={formData[field.name] || ''}
+              onChange={handleChange}
+              placeholder={field.placeholder || field.name}
+              id={field.name}
+            />
+          )}
         </div>
       ))}
+
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
       <button className={'btn btn-primary'} type='submit'>
         增新
       </button>
