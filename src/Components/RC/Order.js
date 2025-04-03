@@ -49,6 +49,8 @@ function Order({ selectedData }) {
 
   const [showEditForm, setShowEditForm] = useState(false) // 控制编辑表单的显示
 
+  console.log('oooooooo', selectedData)
+
   return (
     <div>
       <table className='table table-striped-columns' id='under2'>

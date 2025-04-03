@@ -43,6 +43,8 @@ function RCTable({ selectedData }) {
     setShowMenu(false)
   }
 
+  console.log('--------', selectedData)
+
   return (
     <div className='container'>
       <table className='table table-striped-columns' id='top1'>

@@ -14,8 +14,6 @@ const fieldMapping = {
   recycle: '回收',
   cycle: '循環',
   serial_num: '輸送銘牌機序號',
-  package_person:
-    '組裝人員[外包(林裕忠、吳坤池):1\n製造1組:2\n,製造2組:3\n,製造3組:4\n,專案人員、開發人員:5]',
   order_num: '製令單號',
   factory_order: '廠訂',
   ship_date: '出貨日期',
@@ -68,6 +66,7 @@ function RCEdit({ selectedData, onClose, formType }) {
         serializer: `${modelname(model)}Serializer`, // 填入序列化器名称
       }
 
+      // console.log(payload)
       // 根据 API 端点的实际方法（POST/PUT）调整
       const response = await fetch(`${URL}/api/update2/${formData.id}/`, {
         method: 'POST', // 或者 'POST'，取决于 API 的要求
@@ -111,6 +110,21 @@ function RCEdit({ selectedData, onClose, formType }) {
           {/* 根据 formType 显示不同的表单内容 */}
           {formType === 1 && (
             <>
+              <Form.Group controlId='package_person' key='package_person'>
+                <Form.Label>組裝人員</Form.Label>
+                <Form.Control
+                  as='select'
+                  name='package_person'
+                  value={formData.package_person || ''}
+                  onChange={handleChange}
+                >
+                  <option value='1'>外包(林裕忠、吳坤池)</option>
+                  <option value='2'>製造1組</option>
+                  <option value='3'>製造2組</option>
+                  <option value='4'>製造3組</option>
+                  <option value='5'>專案人員、開發人員</option>
+                </Form.Control>
+              </Form.Group>
               {Object.keys(fieldMapping).map((key) => (
                 <Form.Group controlId={key} key={key}>
                   <Form.Label>{fieldMapping[key]}</Form.Label>
@@ -124,82 +138,90 @@ function RCEdit({ selectedData, onClose, formType }) {
               ))}
             </>
           )}
-
           {formType === 2 && (
-            <Table>
-              <thead>
-                <tr>
-                  <th>項目</th>
-                  <th>預計日期</th>
-                  <th>完成日期</th>
-                  <th>填寫人員</th>
-                  <th>覆核人員</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({ length: 11 }).map((_, index) => (
-                  <tr key={index}>
-                    <td>{items[index]}</td>
-                    <td>
-                      <Form.Control
-                        type='text'
-                        name={`estimated_date_${index}`}
-                        value={formData.estimated_date[index] || ''}
-                        onChange={(e) =>
-                          handleArrayChange(e, index, 'estimated_date')
-                        }
-                      />
-                    </td>
-                    <td>
-                      <Form.Control
-                        type='text'
-                        name={`completion_date_${index}`}
-                        value={formData.completion_date[index] || ''}
-                        onChange={(e) =>
-                          handleArrayChange(e, index, 'completion_date')
-                        }
-                      />
-                    </td>
-                    <td>
-                      {fill[index]}:
-                      <Form.Control
-                        as='select' // 修正這裡，指定為 `select`
-                        name={`fill_person_${index}`}
-                        value={formData.fill_person[index] || ''}
-                        onChange={(e) =>
-                          handleArrayChange(e, index, 'fill_person')
-                        }
-                      >
-                        <option value=''>請選擇</option>
-                        {people.map((person, idx) => (
-                          <option key={idx} value={person}>
-                            {person}
-                          </option>
-                        ))}
-                      </Form.Control>
-                    </td>
-                    <td>
-                      {revi[index]}:
-                      <Form.Control
-                        as='select' // 修正這裡，指定為 `select`
-                        name={`reviewer_${index}`}
-                        value={formData.reviewer[index] || ''}
-                        onChange={(e) =>
-                          handleArrayChange(e, index, 'reviewer')
-                        }
-                      >
-                        <option value=''>請選擇</option>
-                        {people.map((person, idx) => (
-                          <option key={idx} value={person}>
-                            {person}
-                          </option>
-                        ))}
-                      </Form.Control>
-                    </td>
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                overflowX: 'auto',
+                textAlign: 'left',
+              }}
+            >
+              <Table style={{ width: '100%', minWidth: '1200px' }}>
+                <thead>
+                  <tr>
+                    <th>項目</th>
+                    <th>預計日期</th>
+                    <th>完成日期</th>
+                    <th>填寫人員</th>
+                    <th>覆核人員</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {Array.from({ length: 11 }).map((_, index) => (
+                    <tr key={index}>
+                      <td>{items[index]}</td>
+                      <td>
+                        <Form.Control
+                          type='date'
+                          name={`estimated_date_${index}`}
+                          value={formData.estimated_date[index] || ''}
+                          onChange={(e) =>
+                            handleArrayChange(e, index, 'estimated_date')
+                          }
+                        />
+                      </td>
+                      <td>
+                        <Form.Control
+                          type='date'
+                          name={`completion_date_${index}`}
+                          value={formData.completion_date[index] || ''}
+                          onChange={(e) =>
+                            handleArrayChange(e, index, 'completion_date')
+                          }
+                        />
+                      </td>
+                      <td>
+                        {fill[index]}:
+                        <Form.Control
+                          as='select' // 修正這裡，指定為 `select`
+                          name={`fill_person_${index}`}
+                          value={formData.fill_person[index] || ''}
+                          onChange={(e) =>
+                            handleArrayChange(e, index, 'fill_person')
+                          }
+                        >
+                          <option value=''>請選擇</option>
+                          {people.map((person, idx) => (
+                            <option key={idx} value={person}>
+                              {person}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </td>
+                      <td>
+                        {revi[index]}:
+                        <Form.Control
+                          as='select' // 修正這裡，指定為 `select`
+                          name={`reviewer_${index}`}
+                          value={formData.reviewer[index] || ''}
+                          onChange={(e) =>
+                            handleArrayChange(e, index, 'reviewer')
+                          }
+                        >
+                          <option value=''>請選擇</option>
+                          {people.map((person, idx) => (
+                            <option key={idx} value={person}>
+                              {person}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
           )}
 
           <Button variant='primary' type='submit'>

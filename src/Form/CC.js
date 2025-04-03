@@ -6,7 +6,7 @@ import Order from '../Components/CC/order'
 import CCCreat from '../FormCreat/CC'
 import { useLocation } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Spinner } from 'react-bootstrap'
 
 function CC() {
   const location = useLocation()
@@ -15,9 +15,10 @@ function CC() {
 
   const [selectedData, setSelectedData] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [loading, setLoading] = useState(true) // 加载状态
 
   const handleModalToggle = () => {
-    setShowModal(!showModal) // 切換Modal顯示狀態
+    setShowModal(!showModal) // 切换 Modal 显示状态
   }
 
   const formtitle = (model) => {
@@ -33,9 +34,13 @@ function CC() {
     }
   }
 
-  // Ensure `selectedData` is updated correctly
+  // 监听 selectedData 变化，设置加载状态
   useEffect(() => {
-    // Any side effects related to `selectedData` can go here
+    if (selectedData && Object.keys(selectedData).length > 0) {
+      setTimeout(() => {
+        setLoading(false) // 数据加载完成
+      }, 5000) // 延迟 1.5 秒
+    }
   }, [selectedData])
 
   return (
@@ -47,7 +52,18 @@ function CC() {
         form={`${formtitle(model)}CC`}
       >
         {(selectedData) => {
-          console.log('Selected Data in CC:', selectedData) // 调试信息
+          setSelectedData(selectedData) // 更新 selectedData
+
+          if (loading) {
+            return (
+              <div className='text-center'>
+                <Spinner animation='border' role='status'>
+                  <span className='visually-hidden'>Loading...</span>
+                </Spinner>
+              </div>
+            )
+          }
+
           if (
             !selectedData ||
             !selectedData.quality_assurance ||
