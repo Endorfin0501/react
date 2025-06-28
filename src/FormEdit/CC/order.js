@@ -6,17 +6,17 @@ import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 const modelname = (model) => {
-    switch (model) {
-      case 'L機':
-        return 'LCommissioningCompletes';
-      case '鳳凰':
-        return 'PCommissioningCompletes';
-      case '一段式':
-        return 'OCommissioningCompletes';
-      default:
-        return ''; // 处理不匹配的情况
-    }
-  };
+  switch (model) {
+    case 'L機':
+      return 'LCommissioningCompletes'
+    case '鳳凰':
+      return 'PCommissioningCompletes'
+    case '一段式':
+      return 'OCommissioningCompletes'
+    default:
+      return '' // 处理不匹配的情况
+  }
+}
 
 function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
@@ -33,21 +33,23 @@ function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
   }, [data])
 
   const handleEditChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setEditForm((prevForm) => ({
       ...prevForm,
-      [name]: (name === 'orderfir' || name === 'ordersec') ? value.toUpperCase() : value,
-    }));
-}
-
+      [name]:
+        name === 'orderfir' || name === 'ordersec'
+          ? value.toUpperCase()
+          : value,
+    }))
+  }
 
   const fields = [
     { name: 'orderitems', placeholder: '檢驗項目' },
     { name: 'ordernote', placeholder: '備註' },
     { name: 'orderctg', placeholder: '類別' },
     { name: 'orderres', placeholder: '權責' },
-    { name: 'orderfir', placeholder: '自主檢查(OK/NG)' },
-    { name: 'ordersec', placeholder: '品保覆檢(OK/NG)' },
+    { name: 'orderfir', type: 'okng', placeholder: '自主檢查(OK/NG)' },
+    { name: 'ordersec', type: 'okng', placeholder: '品保覆檢(OK/NG)' },
     { name: 'ordercompdate', placeholder: '完成日期' },
   ]
 

@@ -306,10 +306,70 @@ const EditModal = ({
                                 standardIndex * 2
 
                               // 获取 {input} 的数量
+                              console.log('standard:', standard)
+
                               const inputMatches = standard.match(/{input}/g)
                               const numberOfInputs = inputMatches
                                 ? inputMatches.length
                                 : 0
+
+                              const globalInputIndex =
+                                formData.tableData
+                                  .slice(0, sectionIndex)
+                                  .reduce(
+                                    (acc, s) =>
+                                      acc +
+                                      s.items.reduce(
+                                        (acc, i) =>
+                                          acc +
+                                          i.methods.reduce(
+                                            (acc, m) =>
+                                              acc +
+                                              (
+                                                m.standards
+                                                  .join('')
+                                                  .match(/{input}/g) || []
+                                              ).length,
+                                            0
+                                          ),
+                                        0
+                                      ),
+                                    0
+                                  ) +
+                                section.items
+                                  .slice(0, itemIndex)
+                                  .reduce(
+                                    (acc, i) =>
+                                      acc +
+                                      i.methods.reduce(
+                                        (acc, m) =>
+                                          acc +
+                                          (
+                                            m.standards
+                                              .join('')
+                                              .match(/{input}/g) || []
+                                          ).length,
+                                        0
+                                      ),
+                                    0
+                                  ) +
+                                item.methods
+                                  .slice(0, methodIndex)
+                                  .reduce(
+                                    (acc, m) =>
+                                      acc +
+                                      (
+                                        m.standards
+                                          .join('')
+                                          .match(/{input}/g) || []
+                                      ).length,
+                                    0
+                                  ) +
+                                (
+                                  standard
+                                    .slice(0, standardIndex)
+                                    .match(/{input}/g) || []
+                                ).length
 
                               // 用于生成替换后的标准字符串
                               const replacedStandard =
@@ -321,7 +381,9 @@ const EditModal = ({
                                         console.log(standardIndex, index)
                                         const inputValue =
                                           formData.selectedData.teststandard[
-                                            index + (formData.standard - 1)
+                                            globalInputIndex +
+                                              index +
+                                              (formData.standard - 1)
                                           ] || ''
                                         return (
                                           <span key={index}>
@@ -338,7 +400,8 @@ const EditModal = ({
                                                       .teststandard,
                                                   ]
                                                   updatedTestStandard[
-                                                    index +
+                                                    globalInputIndex +
+                                                      +index +
                                                       (formData.standard - 1)
                                                   ] = e.target.value // 更新相应的值
                                                   setFormData((prev) => ({

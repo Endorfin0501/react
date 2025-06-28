@@ -49,15 +49,15 @@ const DynamicInsertForm = ({ fields, repairName, modelName, users }) => {
     // 清除之前的错误信息
     setError('')
 
-    // 验证所有字段是否都有值
-    for (const field of fields) {
-      if (!formData[field.name].trim()) {
-        setError(
-          `The field "${field.placeholder || field.name}" cannot be empty.`
-        )
-        return
-      }
-    }
+    // // 验证所有字段是否都有值
+    // for (const field of fields) {
+    //   if (!formData[field.name].trim()) {
+    //     setError(
+    //       `The field "${field.placeholder || field.name}" cannot be empty.`
+    //     )
+    //     return
+    //   }
+    // }
 
     // 检查 repair_name 是否为空
     if (!formData.repair_name.trim()) {

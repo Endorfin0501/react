@@ -34,14 +34,14 @@ function CC() {
     }
   }
 
-  // 监听 selectedData 变化，设置加载状态
-  useEffect(() => {
-    if (selectedData && Object.keys(selectedData).length > 0) {
-      setTimeout(() => {
-        setLoading(false) // 数据加载完成
-      }, 5000) // 延迟 1.5 秒
-    }
-  }, [selectedData])
+  // // 监听 selectedData 变化，设置加载状态
+  // useEffect(() => {
+  //   if (selectedData && Object.keys(selectedData).length > 0) {
+  //     setTimeout(() => {
+  //       setLoading(false) // 数据加载完成
+  //     }, 5000) // 延迟 1.5 秒
+  //   }
+  // }, [selectedData])
 
   return (
     <div>
@@ -54,15 +54,15 @@ function CC() {
         {(selectedData) => {
           setSelectedData(selectedData) // 更新 selectedData
 
-          if (loading) {
-            return (
-              <div className='text-center'>
-                <Spinner animation='border' role='status'>
-                  <span className='visually-hidden'>Loading...</span>
-                </Spinner>
-              </div>
-            )
-          }
+          // if (loading) {
+          //   return (
+          //     <div className='text-center'>
+          //       <Spinner animation='border' role='status'>
+          //         <span className='visually-hidden'>Loading...</span>
+          //       </Spinner>
+          //     </div>
+          //   )
+          // }
 
           if (
             !selectedData ||

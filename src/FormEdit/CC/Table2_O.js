@@ -31,7 +31,7 @@ const Table2 = ({ initialData, onSave, onCancel, id, index }) => {
     { name: 'testitems', placeholder: '檢驗項目', readOnly: true },
     { name: 'category', placeholder: '標準', readOnly: true },
     { name: 'responsibilities', placeholder: '等級', readOnly: true },
-    { name: 'checkresult', placeholder: '檢驗結果(OK/NG)' },
+    { name: 'checkresult', type: 'radio', placeholder: '檢驗結果(OK/NG)' },
   ]
 
   const handleChange = (e) => {
@@ -98,14 +98,27 @@ const Table2 = ({ initialData, onSave, onCancel, id, index }) => {
       {fields.map((field) => (
         <Form.Group controlId={field.name} key={field.name}>
           <Form.Label>{field.placeholder}</Form.Label>
-          <Form.Control
-            type='text'
-            name={field.name}
-            value={formData?.[field.name] || ''}
-            onChange={handleChange}
-            placeholder={field.placeholder}
-            readOnly={field.readOnly}
-          />
+
+          {field.type === 'radio' ? (
+            <Form.Select
+              name={field.name}
+              value={formData?.[field.name] || ''}
+              onChange={handleChange}
+            >
+              <option value=''>請選擇</option>
+              <option value='OK'>OK</option>
+              <option value='NG'>NG</option>
+            </Form.Select>
+          ) : (
+            <Form.Control
+              type='text'
+              name={field.name}
+              value={formData?.[field.name] || ''}
+              onChange={handleChange}
+              placeholder={field.placeholder}
+              readOnly={field.readOnly}
+            />
+          )}
         </Form.Group>
       ))}
 

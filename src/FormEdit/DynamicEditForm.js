@@ -60,6 +60,25 @@ const DynamicCreatForm = ({ fields, formData, onChange }) => {
           )
         }
 
+        // OK / NG 下拉選單
+        if (type === 'okng') {
+          return (
+            <Form.Group controlId={`form${name}`} key={name}>
+              <Form.Label>{placeholder}</Form.Label>
+              <Form.Control
+                as='select'
+                name={name}
+                value={value || ''}
+                onChange={(e) => onChange(e)}
+              >
+                <option value=''>請選擇</option>
+                <option value='OK'>OK</option>
+                <option value='NG'>NG</option>
+              </Form.Control>
+            </Form.Group>
+          )
+        }
+
         return (
           <Form.Group controlId={`form${name}`} key={name}>
             <Form.Label>{placeholder}</Form.Label>
