@@ -76,7 +76,7 @@ function CCEdit3({ show, handleClose, data = {}, onSave = () => {} }) {
         serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
       }
 
-      const updateResponse = await fetch(`${URL}/api/update/${editForm.id}/`, {
+      const updateResponse = await fetch(`${URL}/api/update5/${editForm.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

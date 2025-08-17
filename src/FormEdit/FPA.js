@@ -18,6 +18,19 @@ const modelname = (model) => {
   }
 }
 
+const modelname2 = (model) => {
+  switch (model) {
+    case 'L機':
+      return 'l_field_part_assembly'
+    case '鳳凰':
+      return 'p_field_part_assembly'
+    case '一段式':
+      return 'o_field_part_assembly'
+    default:
+      return '' // 处理不匹配的情况
+  }
+}
+
 function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
   const [editForm, setEditForm] = useState(data)
   const location = useLocation()
@@ -76,11 +89,11 @@ function FPAEdit({ show, handleClose, data = {}, onSave = () => {} }) {
       // 在请求体中包括模型名称和序列化器名称
       const payload = {
         ...editForm,
-        models: `${modelname(model)}`, // 这里填入模型名称
+        models: `${modelname2(model)}`, // 这里填入模型名称
         serializer: `${modelname(model)}Serializer`, // 这里填入序列化器名称
       }
 
-      const updateResponse = await fetch(`${URL}/api/update/${editForm.id}/`, {
+      const updateResponse = await fetch(`${URL}/api/update5/${editForm.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
